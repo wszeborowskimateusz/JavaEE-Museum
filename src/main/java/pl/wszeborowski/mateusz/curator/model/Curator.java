@@ -1,4 +1,4 @@
-package pl.wszeborowski.mateusz.museum.model;
+package pl.wszeborowski.mateusz.curator.model;
 
 import lombok.*;
 

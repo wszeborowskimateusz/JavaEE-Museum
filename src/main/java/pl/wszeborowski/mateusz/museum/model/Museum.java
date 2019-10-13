@@ -1,6 +1,7 @@
 package pl.wszeborowski.mateusz.museum.model;
 
 import lombok.*;
+import pl.wszeborowski.mateusz.curator.model.Curator;
 import pl.wszeborowski.mateusz.exhibit.model.Exhibit;
 
 import java.io.Serializable;

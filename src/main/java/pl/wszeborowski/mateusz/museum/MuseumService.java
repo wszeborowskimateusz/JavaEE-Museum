@@ -1,8 +1,8 @@
 package pl.wszeborowski.mateusz.museum;
 
+import pl.wszeborowski.mateusz.curator.model.Curator;
 import pl.wszeborowski.mateusz.exhibit.model.Exhibit;
 import pl.wszeborowski.mateusz.exhibit.model.ExhibitCondition;
-import pl.wszeborowski.mateusz.museum.model.Curator;
 import pl.wszeborowski.mateusz.museum.model.Museum;
 
 import javax.annotation.PostConstruct;
@@ -42,8 +42,8 @@ public class MuseumService {
      */
     @PostConstruct
     public void init() {
-        curators.add(new Curator(1, "curator1", "pass1", LocalDate.of(2019, 23, 10)));
-        curators.add(new Curator(2, "curator2", "pass2", LocalDate.of(2015, 24, 18)));
+        curators.add(new Curator(1, "curator1", "pass1", LocalDate.of(2019, 5, 10)));
+        curators.add(new Curator(2, "curator2", "pass2", LocalDate.of(2015, 11, 18)));
 
         exhibits.add(new Exhibit(1, "Holy Grail", ExhibitCondition.EXCELLENT, 760));
         exhibits.add(new Exhibit(2, "Mona Lisa Painting", ExhibitCondition.MEDIUM, 1760));
@@ -52,9 +52,9 @@ public class MuseumService {
         exhibits.add(new Exhibit(5, "Medieval Sword", ExhibitCondition.VERY_GOOD, 1410));
 
         museums.add(new Museum(1, new Curator(curators.get(0)), "The great museum", "New york",
-                LocalDate.of(2018, 23, 10), List.copyOf(exhibits.subList(0, 2))));
+                LocalDate.of(2018, 10, 23), List.copyOf(exhibits.subList(0, 2))));
         museums.add(new Museum(2, new Curator(curators.get(1)), "The small museum", "Warsaw",
-                LocalDate.of(2012, 3, 1), List.copyOf(exhibits.subList(2, 6))));
+                LocalDate.of(2012, 3, 1), List.copyOf(exhibits.subList(2, 5))));
     }
 
     /**
@@ -110,7 +110,7 @@ public class MuseumService {
      *
      * @param curator A curator we want to add
      */
-    private synchronized void saveCurator(Curator curator) {
+    public synchronized void saveCurator(Curator curator) {
         curator.setId(curators.stream().mapToInt(Curator::getId).max().orElse(0) + 1);
         curators.add(new Curator(curator));
     }
@@ -121,7 +121,7 @@ public class MuseumService {
      *
      * @param exhibit A curator we want to add
      */
-    private synchronized void saveExhibit(Exhibit exhibit) {
+    public synchronized void saveExhibit(Exhibit exhibit) {
         if (exhibit.getId() != 0) {
             exhibits.removeIf(b -> b.getId() == exhibit.getId());
             exhibits.add(new Exhibit(exhibit));
@@ -137,7 +137,7 @@ public class MuseumService {
      *
      * @param museum A curator we want to add
      */
-    private synchronized void saveMuseum(Museum museum) {
+    public synchronized void saveMuseum(Museum museum) {
         if (museum.getId() != 0) {
             museums.removeIf(b -> b.getId() == museum.getId());
             museums.add(new Museum(museum));
@@ -148,11 +148,20 @@ public class MuseumService {
     }
 
     /**
+     * Delete given curator
+     *
+     * @param curator An curator we want to delete
+     */
+    public void removeCurator(Curator curator) {
+        curators.removeIf(e -> e.equals(curator));
+    }
+
+    /**
      * Delete given exhibit
      *
      * @param exhibit An exhibit we want to delete
      */
-    private void removeExhibit(Exhibit exhibit) {
+    public void removeExhibit(Exhibit exhibit) {
         exhibits.removeIf(e -> e.equals(exhibit));
     }
 
@@ -161,7 +170,7 @@ public class MuseumService {
      *
      * @param museum An museum we want to delete
      */
-    private void removeMuseum(Museum museum) {
+    public void removeMuseum(Museum museum) {
         museums.removeIf(e -> e.equals(museum));
     }
 }
