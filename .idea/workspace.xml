@@ -7,32 +7,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cd25b0a9-a9ad-4096-9aa3-9f103d198da7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/curator/view/CuratorCreate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/curator/view/CuratorEdit.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/curator/view/CuratorList.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/curator/view/CuratorView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/curator/view/converter/CuratorConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/exhibit/view/ExhibitCreate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/exhibit/view/ExhibitEdit.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/exhibit/view/ExhibitList.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/exhibit/view/ExhibitView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/exhibit/view/converter/ExhibitConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/view/MuseumCreate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/view/MuseumEdit.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/view/MuseumList.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/view/MuseumView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/view/converter/MuseumConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/curator_list.xhtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/curator_view.xhtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/exhibit_list.xhtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/exhibit_view.xhtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/museum_list.xhtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/museum_view.xhtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/curator/CuratorService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/curator_modify.xhtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/exhibit_modify.xhtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/museum_modify.xhtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/curator/model/Curator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/curator/model/Curator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/curator/view/CuratorCreate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/curator/view/CuratorEdit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/curator/view/CuratorModify.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/exhibit/view/ExhibitCreate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/exhibit/view/ExhibitEdit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/exhibit/view/ExhibitModify.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/MuseumService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/MuseumService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/model/Curator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/curator/model/Curator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/model/Museum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/model/Museum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/main.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/main.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/view/MuseumCreate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/view/MuseumEdit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/view/MuseumEdit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/curator_list.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/curator_list.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/curator_view.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/curator_view.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/exhibit_list.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/exhibit_list.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/museum_list.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/museum_list.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/museum_view.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/museum_view.xhtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/WEB-INF/templates/main.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/WEB-INF/templates/main.xhtml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -218,8 +210,16 @@
       <option name="presentableId" value="Default" />
       <updated>1570877076727</updated>
       <workItem from="1570877080767" duration="10123000" />
-      <workItem from="1570891225881" duration="9326000" />
+      <workItem from="1570891225881" duration="21802000" />
     </task>
+    <task id="LOCAL-00001" summary="Adding more beans - editing, viewing">
+      <created>1570967007385</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1570967007386</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -237,5 +237,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Adding more beans - editing, viewing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding more beans - editing, viewing" />
   </component>
 </project>

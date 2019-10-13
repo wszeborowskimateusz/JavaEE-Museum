@@ -31,7 +31,7 @@ public class Curator implements Serializable {
     /**
      * A password of the curator account
      */
-    private String password;
+    private String name;
 
     /**
      * A date of hiring of curator
@@ -46,7 +46,7 @@ public class Curator implements Serializable {
     public Curator(Curator curator) {
         this.id = curator.id;
         this.login = curator.login;
-        this.password = curator.password;
+        this.name = curator.name;
         this.dateOfHiring = curator.dateOfHiring;
     }
 }

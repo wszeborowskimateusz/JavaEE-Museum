@@ -5,22 +5,22 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="/WEB-INF/templates/main.xhtml">
     <f:metadata>
-        <f:viewParam name="curator" value="#{curatorView.curator}" required="true"/>
+        <f:viewParam name="exhibit" value="#{exhibitView.exhibit}" required="true"/>
     </f:metadata>
 
     <ui:define name="content">
         <h:panelGrid columns="2">
-            <h:outputLabel value="Login:" for="login"/>
-            <h:outputText id="login" value="#{curatorView.curator.login}"/>
-
             <h:outputLabel value="Name:" for="name"/>
-            <h:outputText id="name" value="#{curatorView.curator.name}"/>
+            <h:outputText id="name" value="#{exhibitView.exhibit.name}"/>
 
-            <h:outputLabel value="DateOfHiring:" for="dateOfHiring"/>
-            <h:outputText id="dateOfHiring" value="#{curatorView.curator.dateOfHiring}"/>
+            <h:outputLabel value="Year:" for="year"/>
+            <h:outputText id="year" value="#{exhibitView.exhibit.year}"/>
+
+            <h:outputLabel value="Condition:" for="condition"/>
+            <h:outputText id="condition" value="#{exhibitView.exhibit.condition}"/>
         </h:panelGrid>
 
-        <h:button value="Back" outcome="curator_list.xhtml"/>
+        <h:button value="Back" outcome="exhibit_list.xhtml"/>
     </ui:define>
 
 </ui:composition>

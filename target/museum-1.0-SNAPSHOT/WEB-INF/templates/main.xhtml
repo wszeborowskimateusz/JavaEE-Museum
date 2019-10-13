@@ -8,27 +8,28 @@
 <f:view>
     <h:head>
         <meta charset="UTF-8"/>
-        <title>Library</title>
-
-  <!--      <h:outputStylesheet library="css" name="styles.css"/>
-
-        <h:outputScript library="js" name="nav.js" target="body"/>-->
+        <title>Museums</title>
+        <h:outputStylesheet library="css" name="style.css"/>
+        <!--        <h:outputScript library="js" name="nav.js" target="body"/>-->
     </h:head>
     <h:body>
-        WITAJCIE MOI KOCHANI
         <header>
-            <h1>The Library</h1>
+            <h1>The Great Museums</h1>
         </header>
         <nav class="navbar">
             <ul>
-                <li>WItaj</li>
-                <li>To jest test</li>
+                <li><h:link outcome="museum_list.xhtml" value="Museums"/></li>
+                <li><h:link outcome="exhibit_list.xhtml" value="Exhibits"/></li>
+                <li><h:link outcome="curator_list.xhtml" value="Curators"/></li>
             </ul>
         </nav>
         <section>
             <ui:insert name="content"/>
         </section>
-        <footer></footer>
+        <footer>
+            Strona stworzona przez <a href="https://github.com/wszeborowskimateusz">Mateusza
+            Wszeborowskiego</a>
+        </footer>
     </h:body>
 </f:view>
 </html>

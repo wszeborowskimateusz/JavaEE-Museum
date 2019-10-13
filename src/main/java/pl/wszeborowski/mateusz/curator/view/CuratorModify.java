@@ -1,11 +1,10 @@
 package pl.wszeborowski.mateusz.curator.view;
 
-import lombok.Getter;
 import lombok.Setter;
 import pl.wszeborowski.mateusz.curator.model.Curator;
 import pl.wszeborowski.mateusz.museum.MuseumService;
 
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -16,8 +15,8 @@ import java.io.Serializable;
  * @author wszeborowskimateusz
  */
 @Named
-@RequestScoped
-public class CuratorEdit implements Serializable {
+@ViewScoped
+public class CuratorModify implements Serializable {
     /**
      * Injected museum service
      */
@@ -26,12 +25,24 @@ public class CuratorEdit implements Serializable {
     /**
      * An edited curator
      */
-    @Getter
     @Setter
     private Curator curator;
 
+    /**
+     * A getter for the curator - if this page is used for creating a new curator we create a new
+     * instance of Curator class
+     *
+     * @return a curator
+     */
+    public Curator getCurator() {
+        if (curator == null) {
+            curator = new Curator();
+        }
+        return curator;
+    }
+
     @Inject
-    public CuratorEdit(MuseumService museumService) {
+    public CuratorModify(MuseumService museumService) {
         this.museumService = museumService;
     }
 

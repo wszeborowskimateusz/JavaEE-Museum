@@ -1,14 +1,16 @@
 package pl.wszeborowski.mateusz.exhibit.view;
 
-import lombok.Getter;
 import lombok.Setter;
 import pl.wszeborowski.mateusz.exhibit.model.Exhibit;
+import pl.wszeborowski.mateusz.exhibit.model.ExhibitCondition;
 import pl.wszeborowski.mateusz.museum.MuseumService;
 
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * A bean for editing a single exhibit
@@ -16,8 +18,8 @@ import java.io.Serializable;
  * @author wszeborowskimateusz
  */
 @Named
-@RequestScoped
-public class ExhibitEdit implements Serializable {
+@ViewScoped
+public class ExhibitModify implements Serializable {
     /**
      * An injected museum service
      */
@@ -26,13 +28,32 @@ public class ExhibitEdit implements Serializable {
     /**
      * An exhibit to be edited
      */
-    @Getter
     @Setter
     private Exhibit exhibit;
 
     @Inject
-    public ExhibitEdit(MuseumService museumService) {
+    public ExhibitModify(MuseumService museumService) {
         this.museumService = museumService;
+    }
+
+    /**
+     * A getter for the exhibit - if this page is used for creating a new exhibit we create a new
+     * instance of Exhibit class
+     *
+     * @return a curator
+     */
+    public Exhibit getExhibit() {
+        if (exhibit == null) {
+            exhibit = new Exhibit();
+        }
+        return exhibit;
+    }
+
+    /**
+     * @return a list of all available exhibit conditions
+     */
+    public Collection<ExhibitCondition> getAvailableExhibitConditions() {
+        return List.of(ExhibitCondition.values());
     }
 
     /**

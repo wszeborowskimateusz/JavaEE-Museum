@@ -7,7 +7,7 @@ import pl.wszeborowski.mateusz.exhibit.model.Exhibit;
 import pl.wszeborowski.mateusz.museum.MuseumService;
 import pl.wszeborowski.mateusz.museum.model.Museum;
 
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -19,7 +19,7 @@ import java.util.List;
  * @author wszeborowskimateusz
  */
 @Named
-@RequestScoped
+@ViewScoped
 public class MuseumEdit implements Serializable {
     /**
      * An injected museum service
@@ -53,8 +53,7 @@ public class MuseumEdit implements Serializable {
      */
     public List<Exhibit> getAvailableExhibits() {
         if (availableExhibits == null) {
-            //TODO: One exhibit can only be in one museum
-            availableExhibits = museumService.findAllExhibits();
+            availableExhibits = museumService.findAllAvailableExhibits();
         }
         return availableExhibits;
     }
@@ -64,8 +63,7 @@ public class MuseumEdit implements Serializable {
      */
     public List<Curator> getAvailableCurators() {
         if (availableCurators == null) {
-            //TODO: One curator can probably be responsible for at most one museum
-            availableCurators = museumService.findAllCurators();
+            availableCurators = museumService.findAllAvailableCurators();
         }
         return availableCurators;
     }
