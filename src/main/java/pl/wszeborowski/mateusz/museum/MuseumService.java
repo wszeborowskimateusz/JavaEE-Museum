@@ -139,6 +139,12 @@ public class MuseumService {
      */
     public synchronized void saveCurator(Curator curator) {
         if (curator.getId() != 0) {
+            // We need to update the curator in a museum as well
+            museums.forEach(museum -> {
+                if (museum.getCurator().getId() == curator.getId()) {
+                    museum.setCurator(new Curator(curator));
+                }
+            });
             curators.removeIf(b -> b.getId() == curator.getId());
             curators.add(new Curator(curator));
         } else {
@@ -155,6 +161,15 @@ public class MuseumService {
      */
     public synchronized void saveExhibit(Exhibit exhibit) {
         if (exhibit.getId() != 0) {
+            // Synchronize the changes with the museum
+            museums.forEach(museum -> {
+                museum.setExhibitList(museum.getExhibitList().stream().map(exh -> {
+                    if (exh.getId() == exhibit.getId()) {
+                        return new Exhibit(exhibit);
+                    }
+                    return exh;
+                }).collect(Collectors.toList()));
+            });
             exhibits.removeIf(b -> b.getId() == exhibit.getId());
             exhibits.add(new Exhibit(exhibit));
         } else {
@@ -185,6 +200,11 @@ public class MuseumService {
      * @param curator An curator we want to delete
      */
     public void removeCurator(Curator curator) {
+        museums.forEach(museum -> {
+            if (museum.getCurator().getId() == curator.getId()) {
+                museum.setCurator(null);
+            }
+        });
         curators.removeIf(e -> e.equals(curator));
     }
 
@@ -194,6 +214,9 @@ public class MuseumService {
      * @param exhibit An exhibit we want to delete
      */
     public void removeExhibit(Exhibit exhibit) {
+        museums.forEach(museum -> {
+            museum.getExhibitList().removeIf(exh -> exh.getId() == exhibit.getId());
+        });
         exhibits.removeIf(e -> e.equals(exhibit));
     }
 

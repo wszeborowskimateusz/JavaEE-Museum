@@ -49,21 +49,29 @@ public class MuseumEdit implements Serializable {
     }
 
     /**
-     * @return all exhibits in a storage
+     * @return all available exhibits in a storage and additionally all exhibits that belongs to
+     * this museum. Available exhibit is a one not possessed by any museum
      */
     public List<Exhibit> getAvailableExhibits() {
         if (availableExhibits == null) {
             availableExhibits = museumService.findAllAvailableExhibits();
+            if (museum != null) {
+                availableExhibits.addAll(museum.getExhibitList());
+            }
         }
         return availableExhibits;
     }
 
     /**
-     * @return all curators in a storage
+     * @return all available curators in a storage and additionally curator that is responsible
+     * for edited museum. Available curator is a one that is not responsible for any museum
      */
     public List<Curator> getAvailableCurators() {
         if (availableCurators == null) {
             availableCurators = museumService.findAllAvailableCurators();
+            if (museum != null) {
+                availableCurators.add(museum.getCurator());
+            }
         }
         return availableCurators;
     }
