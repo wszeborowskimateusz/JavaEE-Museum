@@ -8,12 +8,9 @@
   <component name="ChangeListManager">
     <list default="true" id="cd25b0a9-a9ad-4096-9aa3-9f103d198da7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/curator/CuratorService.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/MuseumService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/MuseumService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/view/MuseumEdit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/view/MuseumEdit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/pl/wszeborowski/mateusz/museum/MuseumService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/pl/wszeborowski/mateusz/museum/MuseumService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/pl/wszeborowski/mateusz/museum/view/MuseumEdit.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/pl/wszeborowski/mateusz/museum/view/MuseumEdit.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/WEB-INF/classes/pl/wszeborowski/mateusz/museum/MuseumService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/WEB-INF/classes/pl/wszeborowski/mateusz/museum/MuseumService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/WEB-INF/classes/pl/wszeborowski/mateusz/museum/view/MuseumEdit.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/WEB-INF/classes/pl/wszeborowski/mateusz/museum/view/MuseumEdit.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/model/Museum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/model/Museum.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -198,7 +195,7 @@
       <option name="presentableId" value="Default" />
       <updated>1570877076727</updated>
       <workItem from="1570877080767" duration="10123000" />
-      <workItem from="1570891225881" duration="25147000" />
+      <workItem from="1570891225881" duration="27034000" />
     </task>
     <task id="LOCAL-00001" summary="Adding more beans - editing, viewing">
       <created>1570967007385</created>

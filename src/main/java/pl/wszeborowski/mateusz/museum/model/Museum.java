@@ -21,6 +21,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+//TODO: Add @Data annotation
+//TODO: Remove stupid param names like a, b
+//TODO: Move edit code to a separate method
+//TODO: Repair adding museums
+//TODO: Repair formatting with chained methods
 public class Museum implements Serializable {
     /**
      * An artificial id of the museum.
