@@ -1,6 +1,5 @@
 package pl.wszeborowski.mateusz.museum.view;
 
-import lombok.Getter;
 import lombok.Setter;
 import pl.wszeborowski.mateusz.curator.model.Curator;
 import pl.wszeborowski.mateusz.exhibit.model.Exhibit;
@@ -20,7 +19,7 @@ import java.util.List;
  */
 @Named
 @ViewScoped
-public class MuseumEdit implements Serializable {
+public class MuseumModify implements Serializable {
     /**
      * An injected museum service
      */
@@ -29,7 +28,6 @@ public class MuseumEdit implements Serializable {
     /**
      * A museum to be edited
      */
-    @Getter
     @Setter
     private Museum museum;
 
@@ -44,8 +42,18 @@ public class MuseumEdit implements Serializable {
     private List<Curator> availableCurators;
 
     @Inject
-    public MuseumEdit(MuseumService museumService) {
+    public MuseumModify(MuseumService museumService) {
         this.museumService = museumService;
+    }
+
+    /**
+     * @return a museum to be edited or a new museum
+     */
+    public Museum getMuseum() {
+        if (museum == null) {
+            museum = new Museum();
+        }
+        return museum;
     }
 
     /**
@@ -55,7 +63,7 @@ public class MuseumEdit implements Serializable {
     public List<Exhibit> getAvailableExhibits() {
         if (availableExhibits == null) {
             availableExhibits = museumService.findAllAvailableExhibits();
-            if (museum != null) {
+            if (museum != null && museum.getExhibitList() != null) {
                 availableExhibits.addAll(museum.getExhibitList());
             }
         }
@@ -69,7 +77,7 @@ public class MuseumEdit implements Serializable {
     public List<Curator> getAvailableCurators() {
         if (availableCurators == null) {
             availableCurators = museumService.findAllAvailableCurators();
-            if (museum != null) {
+            if (museum != null && museum.getCurator() != null) {
                 availableCurators.add(museum.getCurator());
             }
         }

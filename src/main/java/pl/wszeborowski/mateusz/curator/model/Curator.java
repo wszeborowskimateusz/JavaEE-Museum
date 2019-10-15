@@ -1,6 +1,8 @@
 package pl.wszeborowski.mateusz.curator.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -11,12 +13,9 @@ import java.time.LocalDate;
  *
  * @author wszeborowskimateusz
  */
-@Getter
-@Setter
 @NoArgsConstructor
+@Data
 @AllArgsConstructor
-@EqualsAndHashCode
-@ToString
 public class Curator implements Serializable {
     /**
      * An artificial id of the curator

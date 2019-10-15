@@ -1,6 +1,8 @@
 package pl.wszeborowski.mateusz.museum.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import pl.wszeborowski.mateusz.curator.model.Curator;
 import pl.wszeborowski.mateusz.exhibit.model.Exhibit;
 
@@ -15,17 +17,10 @@ import java.util.stream.Collectors;
  *
  * @author wszeborowskimateusz
  */
-@Getter
-@Setter
+
 @NoArgsConstructor
+@Data
 @AllArgsConstructor
-@EqualsAndHashCode
-@ToString
-//TODO: Add @Data annotation
-//TODO: Remove stupid param names like a, b
-//TODO: Move edit code to a separate method
-//TODO: Repair adding museums
-//TODO: Repair formatting with chained methods
 public class Museum implements Serializable {
     /**
      * An artificial id of the museum.

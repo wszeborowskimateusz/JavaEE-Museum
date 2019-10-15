@@ -61,21 +61,27 @@ public class MuseumService {
      * @return a list of all available curators
      */
     public synchronized List<Curator> findAllCurators() {
-        return curators.stream().map(Curator::new).collect(Collectors.toList());
+        return curators.stream()
+                       .map(Curator::new)
+                       .collect(Collectors.toList());
     }
 
     /**
      * @return a list of all available exhibits
      */
     public synchronized List<Exhibit> findAllExhibits() {
-        return exhibits.stream().map(Exhibit::new).collect(Collectors.toList());
+        return exhibits.stream()
+                       .map(Exhibit::new)
+                       .collect(Collectors.toList());
     }
 
     /**
      * @return a list of all available museums
      */
     public synchronized List<Museum> findAllMuseums() {
-        return museums.stream().map(Museum::new).collect(Collectors.toList());
+        return museums.stream()
+                      .map(Museum::new)
+                      .collect(Collectors.toList());
     }
 
     /**
@@ -83,7 +89,8 @@ public class MuseumService {
      */
     public synchronized List<Curator> findAllAvailableCurators() {
         final List<Curator> curatorsHiredAtMuseums =
-                museums.stream().map(Museum::getCurator)
+                museums.stream()
+                       .map(Museum::getCurator)
                        .distinct()
                        .collect(Collectors.toList());
         final List<Curator> allCurators = findAllCurators();
@@ -96,7 +103,8 @@ public class MuseumService {
      */
     public synchronized List<Exhibit> findAllAvailableExhibits() {
         final List<Exhibit> exhibitsPresentAtMuseums =
-                museums.stream().map(Museum::getExhibitList)
+                museums.stream()
+                       .map(Museum::getExhibitList)
                        .flatMap(Collection::stream)
                        .distinct()
                        .collect(Collectors.toList());
@@ -122,8 +130,11 @@ public class MuseumService {
      * @return Exhibit with the given id or null if the exhibit with the given id is not found
      */
     public synchronized Exhibit findExhibit(int id) {
-        return exhibits.stream().filter(exhibit -> exhibit.getId() == id).findFirst()
-                       .map(Exhibit::new).orElse(null);
+        return exhibits.stream()
+                       .filter(exhibit -> exhibit.getId() == id)
+                       .findFirst()
+                       .map(Exhibit::new)
+                       .orElse(null);
     }
 
     /**
@@ -131,8 +142,11 @@ public class MuseumService {
      * @return Museum with the given id or null if the museum with the given id is not found
      */
     public synchronized Museum findMuseum(int id) {
-        return museums.stream().filter(museum -> museum.getId() == id).findFirst()
-                      .map(Museum::new).orElse(null);
+        return museums.stream()
+                      .filter(museum -> museum.getId() == id)
+                      .findFirst()
+                      .map(Museum::new)
+                      .orElse(null);
     }
 
     /**
@@ -142,18 +156,27 @@ public class MuseumService {
      */
     public synchronized void saveCurator(Curator curator) {
         if (curator.getId() != 0) {
-            // We need to update the curator in a museum as well
-            museums.forEach(museum -> {
-                if (museum.getCurator().getId() == curator.getId()) {
-                    museum.setCurator(new Curator(curator));
-                }
-            });
-            curators.removeIf(b -> b.getId() == curator.getId());
-            curators.add(new Curator(curator));
+            saveCuratorWithMuseumSynchronization(curator);
         } else {
             curator.setId(curators.stream().mapToInt(Curator::getId).max().orElse(0) + 1);
             curators.add(new Curator(curator));
         }
+    }
+
+    /**
+     * This method saves a curator that has already been in a collection and synchronizes the
+     * state with museums
+     *
+     * @param curator a curator to be saved
+     */
+    private synchronized void saveCuratorWithMuseumSynchronization(Curator curator) {
+        museums.forEach(museum -> {
+            if (museum.getCurator().getId() == curator.getId()) {
+                museum.setCurator(new Curator(curator));
+            }
+        });
+        curators.removeIf(curatorIterator -> curatorIterator.getId() == curator.getId());
+        curators.add(new Curator(curator));
     }
 
     /**
@@ -164,20 +187,30 @@ public class MuseumService {
      */
     public synchronized void saveExhibit(Exhibit exhibit) {
         if (exhibit.getId() != 0) {
-            // Synchronize the changes with the museum
-            museums.forEach(
-                    museum -> museum.setExhibitList(museum.getExhibitList().stream().map(exh -> {
-                        if (exh.getId() == exhibit.getId()) {
-                            return new Exhibit(exhibit);
-                        }
-                        return exh;
-                    }).collect(Collectors.toList())));
-            exhibits.removeIf(b -> b.getId() == exhibit.getId());
-            exhibits.add(new Exhibit(exhibit));
+            saveExhibitWithMuseumSynchronization(exhibit);
         } else {
             exhibit.setId(exhibits.stream().mapToInt(Exhibit::getId).max().orElse(0) + 1);
             exhibits.add(new Exhibit(exhibit));
         }
+    }
+
+    /**
+     * This method saves an exhibit that has already been in a collection and synchronizes the
+     * state with museums
+     *
+     * @param exhibit an exhibit to be saved
+     */
+    private synchronized void saveExhibitWithMuseumSynchronization(Exhibit exhibit) {
+        museums.forEach(
+                museum -> museum
+                        .setExhibitList(museum.getExhibitList().stream().map(exhibitIterator -> {
+                            if (exhibitIterator.getId() == exhibit.getId()) {
+                                return new Exhibit(exhibit);
+                            }
+                            return exhibitIterator;
+                        }).collect(Collectors.toList())));
+        exhibits.removeIf(exhibitIterator -> exhibitIterator.getId() == exhibit.getId());
+        exhibits.add(new Exhibit(exhibit));
     }
 
     /**
@@ -188,7 +221,7 @@ public class MuseumService {
      */
     public synchronized void saveMuseum(Museum museum) {
         if (museum.getId() != 0) {
-            museums.removeIf(b -> b.getId() == museum.getId());
+            museums.removeIf(museumIterator -> museumIterator.getId() == museum.getId());
             museums.add(new Museum(museum));
         } else {
             museum.setId(museums.stream().mapToInt(Museum::getId).max().orElse(0) + 1);
@@ -207,7 +240,7 @@ public class MuseumService {
                 museum.setCurator(null);
             }
         });
-        curators.removeIf(e -> e.equals(curator));
+        curators.removeIf(curatorIterator -> curatorIterator.equals(curator));
     }
 
     /**
@@ -217,8 +250,11 @@ public class MuseumService {
      */
     public void removeExhibit(Exhibit exhibit) {
         museums.forEach(
-                museum -> museum.getExhibitList().removeIf(exh -> exh.getId() == exhibit.getId()));
-        exhibits.removeIf(e -> e.equals(exhibit));
+                museum -> museum.getExhibitList()
+                                .removeIf(
+                                        exhibitIterator -> exhibitIterator.getId() == exhibit
+                                                .getId()));
+        exhibits.removeIf(exhibitIterator -> exhibitIterator.equals(exhibit));
     }
 
     /**
@@ -227,6 +263,6 @@ public class MuseumService {
      * @param museum An museum we want to delete
      */
     public void removeMuseum(Museum museum) {
-        museums.removeIf(e -> e.equals(museum));
+        museums.removeIf(museumIterator -> museumIterator.equals(museum));
     }
 }

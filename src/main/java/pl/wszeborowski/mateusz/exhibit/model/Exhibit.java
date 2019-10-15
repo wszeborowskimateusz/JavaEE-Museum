@@ -1,6 +1,8 @@
 package pl.wszeborowski.mateusz.exhibit.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -9,12 +11,9 @@ import java.io.Serializable;
  *
  * @author wszeborowskimateusz
  */
-@Getter
-@Setter
 @NoArgsConstructor
+@Data
 @AllArgsConstructor
-@EqualsAndHashCode
-@ToString
 public class Exhibit implements Serializable {
     /**
      * An artificial identifier of an exhibit

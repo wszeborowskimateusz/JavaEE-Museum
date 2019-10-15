@@ -6,11 +6,28 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd25b0a9-a9ad-4096-9aa3-9f103d198da7" name="Default Changelist" comment="">
+    <list default="true" id="cd25b0a9-a9ad-4096-9aa3-9f103d198da7" name="Default Changelist" comment="Code review">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/curator/CuratorService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/curator/model/Curator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/curator/model/Curator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/exhibit/model/Exhibit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/exhibit/model/Exhibit.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/MuseumService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/MuseumService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/model/Museum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/model/Museum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/view/MuseumEdit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/wszeborowski/mateusz/museum/view/MuseumModify.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/museum_modify.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/museum_modify.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/pl/wszeborowski/mateusz/curator/CuratorService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/pl/wszeborowski/mateusz/curator/model/Curator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/pl/wszeborowski/mateusz/curator/model/Curator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/pl/wszeborowski/mateusz/exhibit/model/Exhibit.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/pl/wszeborowski/mateusz/exhibit/model/Exhibit.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/pl/wszeborowski/mateusz/museum/MuseumService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/pl/wszeborowski/mateusz/museum/MuseumService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/pl/wszeborowski/mateusz/museum/model/Museum.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/pl/wszeborowski/mateusz/museum/model/Museum.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/pl/wszeborowski/mateusz/museum/view/MuseumEdit.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/WEB-INF/classes/pl/wszeborowski/mateusz/curator/CuratorService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/WEB-INF/classes/pl/wszeborowski/mateusz/curator/model/Curator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/WEB-INF/classes/pl/wszeborowski/mateusz/curator/model/Curator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/WEB-INF/classes/pl/wszeborowski/mateusz/exhibit/model/Exhibit.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/WEB-INF/classes/pl/wszeborowski/mateusz/exhibit/model/Exhibit.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/WEB-INF/classes/pl/wszeborowski/mateusz/museum/MuseumService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/WEB-INF/classes/pl/wszeborowski/mateusz/museum/MuseumService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/WEB-INF/classes/pl/wszeborowski/mateusz/museum/model/Museum.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/WEB-INF/classes/pl/wszeborowski/mateusz/museum/model/Museum.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/WEB-INF/classes/pl/wszeborowski/mateusz/museum/view/MuseumEdit.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/museum_modify.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/target/museum-1.0-SNAPSHOT/museum_modify.xhtml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -89,6 +106,7 @@
     </configuration>
     <configuration name="JBoss 10.0.0.Final" type="JBossConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="JBoss 10.0.0.Final" ALTERNATIVE_JRE_ENABLED="false" show_console_on_std_err="true" show_console_on_std_out="true">
       <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/museum-1.0-SNAPSHOT" />
+      <option name="COMMON_VM_ARGUMENTS" value=" -Djboss.socket.binding.port-offset=0" />
       <deployment>
         <artifact name="museum:war exploded">
           <settings />
@@ -225,6 +243,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Adding more beans - editing, viewing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding more beans - editing, viewing" />
+    <MESSAGE value="Code review" />
+    <option name="LAST_COMMIT_MESSAGE" value="Code review" />
   </component>
 </project>

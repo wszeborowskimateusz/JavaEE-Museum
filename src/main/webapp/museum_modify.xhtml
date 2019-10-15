@@ -5,29 +5,29 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="/WEB-INF/templates/main.xhtml">
     <f:metadata>
-        <f:viewParam name="museum" value="#{museumEdit.museum}" required="false"/>
+        <f:viewParam name="museum" value="#{museumModify.museum}" required="false"/>
     </f:metadata>
 
     <ui:define name="content">
         <h:form>
             <h:panelGrid columns="3">
                 <h:outputLabel value="Name:" for="name"/>
-                <h:inputText id="name" value="#{museumEdit.museum.name}"/>
+                <h:inputText id="name" value="#{museumModify.museum.name}"/>
                 <h:message for="name"/>
 
                 <h:outputLabel value="City:" for="city"/>
-                <h:inputText id="city" value="#{museumEdit.museum.city}"/>
+                <h:inputText id="city" value="#{museumModify.museum.city}"/>
                 <h:message for="city"/>
 
                 <h:outputLabel value="Opening date:" for="openingDate"/>
-                <h:inputText id="openingDate" value="#{museumEdit.museum.openingDate}">
+                <h:inputText id="openingDate" value="#{museumModify.museum.openingDate}">
                     <f:convertDateTime type="localDate" pattern="yyyy-MM-dd"/>
                 </h:inputText>
                 <h:message for="openingDate"/>
 
                 <h:outputLabel value="Curator:" for="curator"/>
-                <h:selectOneMenu id="curator" value="#{museumEdit.museum.curator}">
-                    <f:selectItems value="#{museumEdit.availableCurators}"
+                <h:selectOneMenu id="curator" value="#{museumModify.museum.curator}">
+                    <f:selectItems value="#{museumModify.availableCurators}"
                                    var="curator" itemValue="#{curator}"
                                    itemLabel="#{curator.name}"/>
                 </h:selectOneMenu>
@@ -35,14 +35,14 @@
 
                 <h:outputLabel value="Exhibits:" for="exhibits"/>
                 <h:selectManyListbox id="exhibits" collectionType="java.util.ArrayList"
-                                     value="#{museumEdit.museum.exhibitList}">
-                    <f:selectItems value="#{museumEdit.availableExhibits}" var="exhibit"
+                                     value="#{museumModify.museum.exhibitList}">
+                    <f:selectItems value="#{museumModify.availableExhibits}" var="exhibit"
                                    itemValue="#{exhibit}"
                                    itemLabel="#{exhibit.name}"/>
                 </h:selectManyListbox>
                 <h:message for="exhibits"/>
 
-                <h:commandButton value="Save" action="#{museumEdit.saveMuseum}"/>
+                <h:commandButton value="Save" action="#{museumModify.saveMuseum}"/>
                 <h:messages/>
             </h:panelGrid>
         </h:form>
