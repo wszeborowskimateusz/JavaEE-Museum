@@ -24,12 +24,17 @@ public class ExhibitResource {
     private MuseumService museumService;
 
     /**
-     * @return A list of all available exhibits
+     * @param onlyAvailable this param if true indicates that we want to all get available exhibits
+     * @return A list of all exhibits
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Exhibit> getAllExhibits() {
-        return museumService.findAllAvailableExhibits();
+    public Collection<Exhibit> getAllExhibits(
+            @QueryParam("only-available") @DefaultValue("false") boolean onlyAvailable) {
+        if (onlyAvailable) {
+            return museumService.findAllAvailableExhibits();
+        }
+        return museumService.findAllExhibits();
     }
 
     /**

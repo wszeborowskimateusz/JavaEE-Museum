@@ -24,12 +24,17 @@ public class CuratorResource {
     private MuseumService museumService;
 
     /**
-     * @return A list of all available curators
+     * @param onlyAvailable this param if true indicates that we want to all get available curators
+     * @return A list of all curators
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Curator> getAllCurators() {
-        return museumService.findAllAvailableCurators();
+    public Collection<Curator> getAllCurators(
+            @QueryParam("only-available") @DefaultValue("false") boolean onlyAvailable) {
+        if (onlyAvailable) {
+            return museumService.findAllAvailableCurators();
+        }
+        return museumService.findAllCurators();
     }
 
     /**

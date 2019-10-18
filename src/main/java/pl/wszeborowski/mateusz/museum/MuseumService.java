@@ -52,9 +52,10 @@ public class MuseumService {
         exhibits.add(new Exhibit(5, "Medieval Sword", ExhibitCondition.VERY_GOOD, 1410));
 
         museums.add(new Museum(1, curators.get(0), "The great museum", "New york",
-                LocalDate.of(2018, 10, 23), List.copyOf(exhibits.subList(0, 2))));
+                LocalDate.of(2018, 10, 23),
+                (new ArrayList<>(exhibits.subList(0, 2)))));
         museums.add(new Museum(2, curators.get(1), "The small museum", "Warsaw",
-                LocalDate.of(2012, 3, 1), List.copyOf(exhibits.subList(2, 5))));
+                LocalDate.of(2012, 3, 1), (new ArrayList<>(exhibits.subList(2, 5)))));
     }
 
     /**
@@ -111,6 +112,34 @@ public class MuseumService {
         final List<Exhibit> allExhibits = findAllExhibits();
         allExhibits.removeAll(exhibitsPresentAtMuseums);
         return allExhibits;
+    }
+
+    /**
+     * @param museum a museum that we want to find available exhibits list for
+     * @return a list of all available exhibits - those that are not connected to any museum or
+     * are connected only with a given museum
+     */
+    public synchronized List<Exhibit> findAllAvailableExhibitsForMuseum(Museum museum) {
+        List<Exhibit> availableExhibits = findAllAvailableExhibits();
+        if (museum != null && museum.getExhibitList() != null) {
+            availableExhibits.addAll(museum.getExhibitList());
+        }
+
+        return availableExhibits;
+    }
+
+    /**
+     * @param museum a museum that we want to find available exhibits list for
+     * @return a list of all available exhibits - those that are not connected to any museum or
+     * are connected only with a given museum
+     */
+    public synchronized List<Curator> findAllAvailableCuratorsForMuseum(Museum museum) {
+        List<Curator> allAvailableCurators = findAllAvailableCurators();
+        if (museum != null && museum.getCurator() != null) {
+            allAvailableCurators.add(museum.getCurator());
+        }
+
+        return allAvailableCurators;
     }
 
     /**
@@ -171,7 +200,7 @@ public class MuseumService {
      */
     private synchronized void saveCuratorWithMuseumSynchronization(Curator curator) {
         museums.forEach(museum -> {
-            if (museum.getCurator().getId() == curator.getId()) {
+            if (museum.getCurator() != null && museum.getCurator().getId() == curator.getId()) {
                 museum.setCurator(new Curator(curator));
             }
         });
@@ -202,13 +231,22 @@ public class MuseumService {
      */
     private synchronized void saveExhibitWithMuseumSynchronization(Exhibit exhibit) {
         museums.forEach(
-                museum -> museum
-                        .setExhibitList(museum.getExhibitList().stream().map(exhibitIterator -> {
-                            if (exhibitIterator.getId() == exhibit.getId()) {
-                                return new Exhibit(exhibit);
-                            }
-                            return exhibitIterator;
-                        }).collect(Collectors.toList())));
+                museum -> {
+                    if (museum.getExhibitList() != null) {
+                        museum.setExhibitList(
+                                museum.getExhibitList()
+                                      .stream()
+                                      .map(exhibitIterator -> {
+                                          if (exhibitIterator.getId() == exhibit.getId()) {
+                                              return new Exhibit(exhibit);
+                                          }
+                                          return exhibitIterator;
+                                      })
+                                      .collect(Collectors.toList())
+                        );
+                    }
+                }
+        );
         exhibits.removeIf(exhibitIterator -> exhibitIterator.getId() == exhibit.getId());
         exhibits.add(new Exhibit(exhibit));
     }
@@ -236,7 +274,7 @@ public class MuseumService {
      */
     public void removeCurator(Curator curator) {
         museums.forEach(museum -> {
-            if (museum.getCurator().getId() == curator.getId()) {
+            if (museum.getCurator() != null && museum.getCurator().getId() == curator.getId()) {
                 museum.setCurator(null);
             }
         });
@@ -249,11 +287,15 @@ public class MuseumService {
      * @param exhibit An exhibit we want to delete
      */
     public void removeExhibit(Exhibit exhibit) {
-        museums.forEach(
-                museum -> museum.getExhibitList()
-                                .removeIf(
-                                        exhibitIterator -> exhibitIterator.getId() == exhibit
-                                                .getId()));
+        for (Museum museum : museums) {
+            if (museum.getExhibitList() != null) {
+                museum.getExhibitList()
+                      .removeIf(exhibitIterator -> exhibitIterator.getId() == exhibit
+                              .getId());
+            }
+        }
+
+
         exhibits.removeIf(exhibitIterator -> exhibitIterator.equals(exhibit));
     }
 

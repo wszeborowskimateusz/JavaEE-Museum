@@ -1,5 +1,7 @@
 package pl.wszeborowski.mateusz.museum.resource;
 
+import pl.wszeborowski.mateusz.curator.model.Curator;
+import pl.wszeborowski.mateusz.exhibit.model.Exhibit;
 import pl.wszeborowski.mateusz.museum.MuseumService;
 import pl.wszeborowski.mateusz.museum.model.Museum;
 
@@ -9,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * A REST resource class that represents a museum
@@ -65,6 +68,42 @@ public class MuseumResource {
         }
 
         return Response.ok(museum).build();
+    }
+
+    /**
+     * Gets a list of available exhibits for a given museum
+     *
+     * @param museumId Path param, id of the museum we want to get
+     * @return status 404 if museum was not found or 200 with found list
+     */
+    @GET
+    @Path("{museumId}/available-exhibits")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAvailableExhibitsForMuseum(@PathParam("museumId") int museumId) {
+        Museum museum = museumService.findMuseum(museumId);
+        if (museum == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        List<Exhibit> availableExhibits = museumService.findAllAvailableExhibitsForMuseum(museum);
+        return Response.ok(availableExhibits).build();
+    }
+
+    /**
+     * Gets a list of available curators for a given museum
+     *
+     * @param museumId Path param, id of the museum we want to get
+     * @return status 404 if museum was not found or 200 with found list
+     */
+    @GET
+    @Path("{museumId}/available-curators")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAvailableCuratorsForMuseum(@PathParam("museumId") int museumId) {
+        Museum museum = museumService.findMuseum(museumId);
+        if (museum == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        List<Curator> availableExhibits = museumService.findAllAvailableCuratorsForMuseum(museum);
+        return Response.ok(availableExhibits).build();
     }
 
     /**

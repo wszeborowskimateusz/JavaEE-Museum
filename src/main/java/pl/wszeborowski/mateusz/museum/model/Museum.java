@@ -63,7 +63,12 @@ public class Museum implements Serializable {
         this.name = museum.name;
         this.city = museum.city;
         this.openingDate = museum.openingDate;
-        this.exhibitList = museum.exhibitList.stream().map(Exhibit::new)
-                                             .collect(Collectors.toList());
+        if (museum.exhibitList == null) {
+            this.exhibitList = null;
+        } else {
+            this.exhibitList = museum.exhibitList.stream().map(Exhibit::new)
+                                                 .collect(Collectors.toList());
+        }
+
     }
 }
