@@ -24,7 +24,7 @@ public class CuratorResource {
     private MuseumService museumService;
 
     /**
-     * @param onlyAvailable this param if true indicates that we want to all get available curators
+     * @param onlyAvailable this param if true indicates that we want to get only available curators
      * @return A list of all curators
      */
     @GET
