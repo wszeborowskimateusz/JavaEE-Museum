@@ -1,7 +1,9 @@
 package pl.wszeborowski.mateusz.museum.view;
 
 import lombok.Setter;
+import pl.wszeborowski.mateusz.curator.CuratorService;
 import pl.wszeborowski.mateusz.curator.model.Curator;
+import pl.wszeborowski.mateusz.exhibit.ExhibitService;
 import pl.wszeborowski.mateusz.exhibit.model.Exhibit;
 import pl.wszeborowski.mateusz.museum.MuseumService;
 import pl.wszeborowski.mateusz.museum.model.Museum;
@@ -26,6 +28,16 @@ public class MuseumModify implements Serializable {
     private MuseumService museumService;
 
     /**
+     * An injected curator service
+     */
+    private CuratorService curatorService;
+
+    /**
+     * An injected exhibit service
+     */
+    private ExhibitService exhibitService;
+
+    /**
      * A museum to be edited
      */
     @Setter
@@ -42,8 +54,11 @@ public class MuseumModify implements Serializable {
     private List<Curator> availableCurators;
 
     @Inject
-    public MuseumModify(MuseumService museumService) {
+    public MuseumModify(MuseumService museumService, CuratorService curatorService,
+                        ExhibitService exhibitService) {
         this.museumService = museumService;
+        this.curatorService = curatorService;
+        this.exhibitService = exhibitService;
     }
 
     /**
@@ -62,7 +77,7 @@ public class MuseumModify implements Serializable {
      */
     public List<Exhibit> getAvailableExhibits() {
         if (availableExhibits == null) {
-            availableExhibits = museumService.findAllAvailableExhibits();
+            availableExhibits = exhibitService.findAllAvailableExhibits();
             if (museum != null && museum.getExhibitList() != null) {
                 availableExhibits.addAll(museum.getExhibitList());
             }
@@ -76,7 +91,7 @@ public class MuseumModify implements Serializable {
      */
     public List<Curator> getAvailableCurators() {
         if (availableCurators == null) {
-            availableCurators = museumService.findAllAvailableCurators();
+            availableCurators = curatorService.findAllAvailableCurators();
             if (museum != null && museum.getCurator() != null) {
                 availableCurators.add(museum.getCurator());
             }

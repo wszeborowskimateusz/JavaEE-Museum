@@ -1,10 +1,13 @@
 package pl.wszeborowski.mateusz.exhibit.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.wszeborowski.mateusz.resource.model.Link;
 
+import javax.json.bind.annotation.JsonbProperty;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * An exhibit that is located in a museum
@@ -13,7 +16,6 @@ import java.io.Serializable;
  */
 @NoArgsConstructor
 @Data
-@AllArgsConstructor
 public class Exhibit implements Serializable {
     /**
      * An artificial identifier of an exhibit
@@ -46,4 +48,18 @@ public class Exhibit implements Serializable {
         this.condition = exhibit.condition;
         this.year = exhibit.year;
     }
+
+    public Exhibit(int id, String name,
+                   ExhibitCondition condition, int year) {
+        this.id = id;
+        this.name = name;
+        this.condition = condition;
+        this.year = year;
+    }
+
+    /**
+     * HATEOAS links.
+     */
+    @JsonbProperty("_links")
+    private Map<String, Link> links = new HashMap<>();
 }

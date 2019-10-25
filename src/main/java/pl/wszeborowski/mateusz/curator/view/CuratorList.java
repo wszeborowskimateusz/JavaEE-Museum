@@ -1,7 +1,7 @@
 package pl.wszeborowski.mateusz.curator.view;
 
+import pl.wszeborowski.mateusz.curator.CuratorService;
 import pl.wszeborowski.mateusz.curator.model.Curator;
-import pl.wszeborowski.mateusz.museum.MuseumService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -17,10 +17,10 @@ import java.util.List;
 @RequestScoped
 public class CuratorList {
     /**
-     * Museum service needed for getting curators
+     * Curator service needed for getting curators
      * Injected by a constructor
      */
-    private MuseumService museumService;
+    private CuratorService curatorService;
 
     /**
      * Lazy loaded list of curators
@@ -28,15 +28,15 @@ public class CuratorList {
     private List<Curator> curators;
 
     @Inject
-    public CuratorList(MuseumService museumService) {
-        this.museumService = museumService;
+    public CuratorList(CuratorService curatorService) {
+        this.curatorService = curatorService;
     }
 
     /**
      * @return all curators in storage
      */
     public List<Curator> getCurators() {
-        return museumService.findAllCurators();
+        return curatorService.findAllCurators(0, curatorService.countCurators());
     }
 
     /**
@@ -46,7 +46,7 @@ public class CuratorList {
      * @return navigation url
      */
     public String removeCurator(Curator curator) {
-        museumService.removeCurator(curator);
+        curatorService.removeCurator(curator);
         return "curator_list?faces-redirect=true";
     }
 }

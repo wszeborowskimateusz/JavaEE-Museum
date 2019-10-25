@@ -1,7 +1,7 @@
 package pl.wszeborowski.mateusz.curator.view.converter;
 
+import pl.wszeborowski.mateusz.curator.CuratorService;
 import pl.wszeborowski.mateusz.curator.model.Curator;
-import pl.wszeborowski.mateusz.museum.MuseumService;
 
 import javax.enterprise.context.Dependent;
 import javax.faces.component.UIComponent;
@@ -19,14 +19,14 @@ import javax.inject.Inject;
 @Dependent
 public class CuratorConverter implements Converter<Curator> {
     /**
-     * Museum service needed to get Curator object by it's id
+     * Curator service needed to get Curator object by it's id
      * It is injected by a constructor
      */
-    private MuseumService museumService;
+    private CuratorService curatorService;
 
     @Inject
-    public CuratorConverter(MuseumService museumService) {
-        this.museumService = museumService;
+    public CuratorConverter(CuratorService curatorService) {
+        this.curatorService = curatorService;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class CuratorConverter implements Converter<Curator> {
         if (value == null || value.isEmpty()) {
             return null;
         }
-        return museumService.findCurator(Integer.parseInt(value));
+        return curatorService.findCurator(Integer.parseInt(value));
     }
 
     @Override

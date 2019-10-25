@@ -1,17 +1,23 @@
 package pl.wszeborowski.mateusz.museum.resource;
 
+import pl.wszeborowski.mateusz.curator.CuratorService;
 import pl.wszeborowski.mateusz.curator.model.Curator;
+import pl.wszeborowski.mateusz.curator.resource.CuratorResource;
+import pl.wszeborowski.mateusz.exhibit.ExhibitService;
 import pl.wszeborowski.mateusz.exhibit.model.Exhibit;
+import pl.wszeborowski.mateusz.exhibit.resource.ExhibitResource;
 import pl.wszeborowski.mateusz.museum.MuseumService;
 import pl.wszeborowski.mateusz.museum.model.Museum;
+import pl.wszeborowski.mateusz.resource.model.EmbeddedResource;
+import pl.wszeborowski.mateusz.resource.model.Link;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-import java.util.Collection;
+import javax.ws.rs.core.*;
 import java.util.List;
+
+import static pl.wszeborowski.mateusz.resource.UriHelper.uri;
+import static pl.wszeborowski.mateusz.resource.utils.ResourceUtils.*;
 
 /**
  * A REST resource class that represents a museum
@@ -20,27 +26,39 @@ import java.util.List;
  */
 @Path("museums")
 public class MuseumResource {
-    /**
-     * A museum service for business login
-     */
+
+    @Context
+    private UriInfo info;
+
     @Inject
     private MuseumService museumService;
 
-    /**
-     * @return A list of all museums
-     */
+    @Inject
+    private CuratorService curatorService;
+
+    @Inject
+    private ExhibitService exhibitService;
+
     @GET
+    @Path("")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Museum> getAllMuseums() {
-        return museumService.findAllMuseums();
+    public Response getAllMuseums() {
+        List<Museum> museums = museumService.findAllMuseums();
+        museums.forEach(
+                museum -> addSelfLink(museum.getLinks(), info, MuseumResource.class, "getMuseum",
+                        museum.getId()));
+
+        EmbeddedResource.EmbeddedResourceBuilder<List<Museum>> builder =
+                EmbeddedResource.<List<Museum>>builder()
+                        .embedded("museums", museums);
+
+        addApiLink(builder, info);
+        addSelfLink(builder, info, MuseumResource.class, "getAllMuseums");
+
+        EmbeddedResource<List<Museum>> embedded = builder.build();
+        return Response.ok(embedded).build();
     }
 
-    /**
-     * Add a new museum
-     *
-     * @param museum an museum to be added
-     * @return status 201 CREATED with new object URI
-     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response saveMuseum(Museum museum) {
@@ -52,12 +70,6 @@ public class MuseumResource {
                        .build();
     }
 
-    /**
-     * Gets a single museum
-     *
-     * @param museumId Path param, id of the museum we want to get
-     * @return status 404 if museum was not found or 200 with found museum
-     */
     @GET
     @Path("{museumId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -67,15 +79,87 @@ public class MuseumResource {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
+        addSelfLink(museum.getLinks(), info, MuseumResource.class, "getMuseum", museum.getId());
+        addApiLink(museum.getLinks(), info);
+
+        museum.getLinks().put(
+                "museums",
+                Link.builder()
+                    .href(uri(info, MuseumResource.class, "getAllMuseums"))
+                    .build());
+
+        if (museum.getExhibitList() != null && !museum.getExhibitList().isEmpty()) {
+            addLink(museum.getLinks(), info, MuseumResource.class, "getMuseumExhibits",
+                    museumId, "exhibits");
+        }
+
+        if (museum.getCurator() != null) {
+            addLink(museum.getLinks(), info, MuseumResource.class, "getMuseumCurator",
+                    museumId, "curator");
+        }
+
         return Response.ok(museum).build();
     }
 
-    /**
-     * Gets a list of available exhibits for a given museum
-     *
-     * @param museumId Path param, id of the museum we want to get
-     * @return status 404 if museum was not found or 200 with found list
-     */
+    @GET
+    @Path("{museumId}/exhibits")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getMuseumExhibits(@PathParam("museumId") int museumId) {
+        Museum museum = museumService.findMuseum(museumId);
+        if (museum != null) {
+            List<Exhibit> exhibitList = List.copyOf(museum.getExhibitList());
+            exhibitList
+                    .forEach(exhibit -> addSelfLink(exhibit.getLinks(), info, ExhibitResource.class,
+                            "getExhibit", exhibit.getId()));
+            EmbeddedResource<List<Exhibit>> embedded = EmbeddedResource.<List<Exhibit>>builder()
+                    .embedded("exhibits", exhibitList)
+                    .link(
+                            "museum",
+                            Link.builder()
+                                .href(uri(info, MuseumResource.class, "getMuseum", museum.getId()))
+                                .build())
+                    .link(
+                            "self",
+                            Link.builder()
+                                .href(uri(info, MuseumResource.class, "getMuseumExhibits",
+                                        museum.getId()))
+                                .build())
+                    .build();
+            return Response.ok(embedded).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    @GET
+    @Path("{museumId}/curator")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getMuseumCurator(@PathParam("museumId") int museumId) {
+        Museum museum = museumService.findMuseum(museumId);
+        if (museum != null) {
+            Curator curator = new Curator(museum.getCurator());
+            addSelfLink(curator.getLinks(), info, CuratorResource.class, "getCurator",
+                    curator.getId());
+            EmbeddedResource<Curator> embedded = EmbeddedResource.<Curator>builder()
+                    .embedded("curator", curator)
+                    .link(
+                            "museum",
+                            Link.builder()
+                                .href(uri(info, MuseumResource.class, "getMuseum", museum.getId()))
+                                .build())
+                    .link(
+                            "self",
+                            Link.builder()
+                                .href(uri(info, MuseumResource.class, "getMuseumCurator",
+                                        museum.getId()))
+                                .build())
+                    .build();
+            return Response.ok(embedded).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
     @GET
     @Path("{museumId}/available-exhibits")
     @Produces(MediaType.APPLICATION_JSON)
@@ -84,16 +168,10 @@ public class MuseumResource {
         if (museum == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        List<Exhibit> availableExhibits = museumService.findAllAvailableExhibitsForMuseum(museum);
+        List<Exhibit> availableExhibits = exhibitService.findAllAvailableExhibitsForMuseum(museum);
         return Response.ok(availableExhibits).build();
     }
 
-    /**
-     * Gets a list of available curators for a given museum
-     *
-     * @param museumId Path param, id of the museum we want to get
-     * @return status 404 if museum was not found or 200 with found list
-     */
     @GET
     @Path("{museumId}/available-curators")
     @Produces(MediaType.APPLICATION_JSON)
@@ -102,18 +180,10 @@ public class MuseumResource {
         if (museum == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        List<Curator> availableExhibits = museumService.findAllAvailableCuratorsForMuseum(museum);
+        List<Curator> availableExhibits = curatorService.findAllAvailableCuratorsForMuseum(museum);
         return Response.ok(availableExhibits).build();
     }
 
-    /**
-     * Updates a single museum
-     *
-     * @param museumId id of the museum we want to edit
-     * @param museum   ad edited museum
-     * @return status 404 if museum with given id was not found, 400 when ids doesnt match and
-     * 200 when museum was properly modified
-     */
     @PUT
     @Path("{museumId}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -128,12 +198,6 @@ public class MuseumResource {
         return Response.ok().build();
     }
 
-    /**
-     * Removes a single museum
-     *
-     * @param museumId an id of the museum we want to remove
-     * @return 404 when museum was not found, 204 when museum was properly removed
-     */
     @DELETE
     @Path("{museumId}")
     public Response removeMuseum(@PathParam("museumId") int museumId) {

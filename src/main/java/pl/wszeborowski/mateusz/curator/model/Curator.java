@@ -1,11 +1,14 @@
 package pl.wszeborowski.mateusz.curator.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.wszeborowski.mateusz.resource.model.Link;
 
+import javax.json.bind.annotation.JsonbProperty;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -15,7 +18,6 @@ import java.time.LocalDate;
  */
 @NoArgsConstructor
 @Data
-@AllArgsConstructor
 public class Curator implements Serializable {
     /**
      * An artificial id of the curator
@@ -48,4 +50,17 @@ public class Curator implements Serializable {
         this.name = curator.name;
         this.dateOfHiring = curator.dateOfHiring;
     }
+
+    public Curator(int id, String login, String name, LocalDate dateOfHiring) {
+        this.id = id;
+        this.login = login;
+        this.name = name;
+        this.dateOfHiring = dateOfHiring;
+    }
+
+    /**
+     * HATEOAS links.
+     */
+    @JsonbProperty("_links")
+    private Map<String, Link> links = new HashMap<>();
 }

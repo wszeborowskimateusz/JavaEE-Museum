@@ -1,14 +1,20 @@
 package pl.wszeborowski.mateusz.curator.resource;
 
+import pl.wszeborowski.mateusz.curator.CuratorService;
 import pl.wszeborowski.mateusz.curator.model.Curator;
-import pl.wszeborowski.mateusz.museum.MuseumService;
+import pl.wszeborowski.mateusz.resource.model.EmbeddedResource;
+import pl.wszeborowski.mateusz.resource.model.Link;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-import java.util.Collection;
+import javax.ws.rs.core.*;
+import java.util.List;
+
+import static pl.wszeborowski.mateusz.curator.resource.utils.CuratorResourceUtils.preparePaginationLinks;
+import static pl.wszeborowski.mateusz.resource.UriHelper.uri;
+import static pl.wszeborowski.mateusz.resource.utils.ResourceUtils.addApiLink;
+import static pl.wszeborowski.mateusz.resource.utils.ResourceUtils.addSelfLink;
+
 
 /**
  * This is a REST resource for Curators
@@ -17,24 +23,43 @@ import java.util.Collection;
  */
 @Path("curators")
 public class CuratorResource {
+
     /**
-     * A museum service for business login
+     * Page size for pagination.
+     */
+    private static final int PAGE_SIZE = 2;
+
+    @Context
+    private UriInfo info;
+
+    /**
+     * A curator service for business login
      */
     @Inject
-    private MuseumService museumService;
+    private CuratorService curatorService;
 
     /**
      * @param onlyAvailable this param if true indicates that we want to get only available curators
      * @return A list of all curators
      */
     @GET
+    @Path("")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Curator> getAllCurators(
-            @QueryParam("only-available") @DefaultValue("false") boolean onlyAvailable) {
+    public Response getAllCurators(
+            @QueryParam("only-available") @DefaultValue("false") boolean onlyAvailable,
+            @QueryParam("page") @DefaultValue("0") Integer page) {
         if (onlyAvailable) {
-            return museumService.findAllAvailableCurators();
+            return Response.ok(curatorService.findAllAvailableCurators()).build();
         }
-        return museumService.findAllCurators();
+        List<Curator> curators = curatorService.findAllCurators(page * PAGE_SIZE, PAGE_SIZE);
+
+        curators.forEach(curator -> addSelfLink(curator.getLinks(), info, CuratorResource.class,
+                "getCurator", curator.getId()));
+
+        EmbeddedResource<List<Curator>> embedded =
+                preparePaginationLinks(curatorService, curators, info, page);
+
+        return Response.ok(embedded).build();
     }
 
     /**
@@ -46,7 +71,7 @@ public class CuratorResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response saveCurator(Curator curator) {
-        museumService.saveCurator(curator);
+        curatorService.saveCurator(curator);
         return Response.created(
                 UriBuilder.fromResource(CuratorResource.class)
                           .path(CuratorResource.class, "getCurator")
@@ -64,10 +89,20 @@ public class CuratorResource {
     @Path("{curatorId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCurator(@PathParam("curatorId") int curatorId) {
-        Curator curator = museumService.findCurator(curatorId);
+        Curator curator = curatorService.findCurator(curatorId);
         if (curator == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+        addSelfLink(curator.getLinks(), info, CuratorResource.class, "getCurator",
+                curator.getId());
+
+        curator.getLinks().put(
+                "curators",
+                Link.builder()
+                    .href(uri(info, CuratorResource.class, "getAllCurators"))
+                    .build());
+
+        addApiLink(curator.getLinks(), info);
 
         return Response.ok(curator).build();
     }
@@ -84,13 +119,13 @@ public class CuratorResource {
     @Path("{curatorId}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateCurator(@PathParam("curatorId") int curatorId, Curator curator) {
-        Curator originalCurator = museumService.findCurator(curatorId);
+        Curator originalCurator = curatorService.findCurator(curatorId);
         if (originalCurator == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         } else if (originalCurator.getId() != curator.getId()) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        museumService.saveCurator(curator);
+        curatorService.saveCurator(curator);
         return Response.ok().build();
     }
 
@@ -103,11 +138,11 @@ public class CuratorResource {
     @DELETE
     @Path("{curatorId}")
     public Response removeCurator(@PathParam("curatorId") int curatorId) {
-        Curator curator = museumService.findCurator(curatorId);
+        Curator curator = curatorService.findCurator(curatorId);
         if (curator == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        museumService.removeCurator(curator);
+        curatorService.removeCurator(curator);
         return Response.noContent().build();
     }
 }

@@ -1,14 +1,18 @@
 package pl.wszeborowski.mateusz.exhibit.resource;
 
+import pl.wszeborowski.mateusz.exhibit.ExhibitService;
 import pl.wszeborowski.mateusz.exhibit.model.Exhibit;
-import pl.wszeborowski.mateusz.museum.MuseumService;
+import pl.wszeborowski.mateusz.resource.model.EmbeddedResource;
+import pl.wszeborowski.mateusz.resource.model.Link;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-import java.util.Collection;
+import javax.ws.rs.core.*;
+import java.util.List;
+
+import static pl.wszeborowski.mateusz.resource.UriHelper.uri;
+import static pl.wszeborowski.mateusz.resource.utils.ResourceUtils.addApiLink;
+import static pl.wszeborowski.mateusz.resource.utils.ResourceUtils.addSelfLink;
 
 /**
  * A REST resource that represents an Exhibit
@@ -17,24 +21,42 @@ import java.util.Collection;
  */
 @Path("exhibits")
 public class ExhibitResource {
+
+    @Context
+    private UriInfo info;
+
     /**
-     * A museum service for business login
+     * A exhibit service for business login
      */
     @Inject
-    private MuseumService museumService;
+    private ExhibitService exhibitService;
 
     /**
      * @param onlyAvailable this param if true indicates that we want to all get available exhibits
      * @return A list of all exhibits
      */
     @GET
+    @Path("")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Exhibit> getAllExhibits(
+    public Response getAllExhibits(
             @QueryParam("only-available") @DefaultValue("false") boolean onlyAvailable) {
         if (onlyAvailable) {
-            return museumService.findAllAvailableExhibits();
+            return Response.ok(exhibitService.findAllAvailableExhibits()).build();
         }
-        return museumService.findAllExhibits();
+
+        List<Exhibit> exhibits = exhibitService.findAllExhibits();
+        exhibits.forEach(exhibit -> addSelfLink(exhibit.getLinks(), info, ExhibitResource.class,
+                "getExhibit", exhibit.getId()));
+
+        EmbeddedResource.EmbeddedResourceBuilder<List<Exhibit>> builder =
+                EmbeddedResource.<List<Exhibit>>builder()
+                        .embedded("exhibits", exhibits);
+
+        addApiLink(builder, info);
+        addSelfLink(builder, info, ExhibitResource.class, "getAllExhibits");
+
+        EmbeddedResource<List<Exhibit>> embedded = builder.build();
+        return Response.ok(embedded).build();
     }
 
     /**
@@ -46,7 +68,7 @@ public class ExhibitResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response saveExhibit(Exhibit exhibit) {
-        museumService.saveExhibit(exhibit);
+        exhibitService.saveExhibit(exhibit);
         return Response.created(
                 UriBuilder.fromResource(ExhibitResource.class)
                           .path(ExhibitResource.class, "getExhibit")
@@ -64,10 +86,20 @@ public class ExhibitResource {
     @Path("{exhibitId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getExhibit(@PathParam("exhibitId") int exhibitId) {
-        Exhibit exhibit = museumService.findExhibit(exhibitId);
+        Exhibit exhibit = exhibitService.findExhibit(exhibitId);
         if (exhibit == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+        addSelfLink(exhibit.getLinks(), info, ExhibitResource.class, "getExhibit",
+                exhibit.getId());
+
+        exhibit.getLinks().put(
+                "exhibits",
+                Link.builder()
+                    .href(uri(info, ExhibitResource.class, "getAllExhibits"))
+                    .build());
+
+        addApiLink(exhibit.getLinks(), info);
 
         return Response.ok(exhibit).build();
     }
@@ -84,13 +116,13 @@ public class ExhibitResource {
     @Path("{exhibitId}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateExhibit(@PathParam("exhibitId") int exhibitId, Exhibit exhibit) {
-        Exhibit originalExhibit = museumService.findExhibit(exhibitId);
+        Exhibit originalExhibit = exhibitService.findExhibit(exhibitId);
         if (originalExhibit == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         } else if (originalExhibit.getId() != exhibit.getId()) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        museumService.saveExhibit(exhibit);
+        exhibitService.saveExhibit(exhibit);
         return Response.ok().build();
     }
 
@@ -103,11 +135,11 @@ public class ExhibitResource {
     @DELETE
     @Path("{exhibitId}")
     public Response removeExhibit(@PathParam("exhibitId") int exhibitId) {
-        Exhibit exhibit = museumService.findExhibit(exhibitId);
+        Exhibit exhibit = exhibitService.findExhibit(exhibitId);
         if (exhibit == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        museumService.removeExhibit(exhibit);
+        exhibitService.removeExhibit(exhibit);
         return Response.noContent().build();
     }
 }

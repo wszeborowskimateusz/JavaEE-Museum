@@ -1,14 +1,18 @@
 package pl.wszeborowski.mateusz.museum.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.wszeborowski.mateusz.curator.model.Curator;
 import pl.wszeborowski.mateusz.exhibit.model.Exhibit;
+import pl.wszeborowski.mateusz.resource.model.Link;
 
+import javax.json.bind.annotation.JsonbProperty;
+import javax.json.bind.annotation.JsonbTransient;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -20,7 +24,6 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Data
-@AllArgsConstructor
 public class Museum implements Serializable {
     /**
      * An artificial id of the museum.
@@ -30,6 +33,7 @@ public class Museum implements Serializable {
     /**
      * Id of the museum's curator. Each museum might have at most one curator.
      */
+    @JsonbTransient
     private Curator curator;
 
     /**
@@ -50,6 +54,7 @@ public class Museum implements Serializable {
     /**
      * List of all of museum's exhibits
      */
+    @JsonbTransient
     private List<Exhibit> exhibitList;
 
     /**
@@ -66,9 +71,26 @@ public class Museum implements Serializable {
         if (museum.exhibitList == null) {
             this.exhibitList = null;
         } else {
-            this.exhibitList = museum.exhibitList.stream().map(Exhibit::new)
+            this.exhibitList = museum.exhibitList.stream()
+                                                 .map(Exhibit::new)
                                                  .collect(Collectors.toList());
         }
 
     }
+
+    public Museum(int id, Curator curator, String name, String city, LocalDate openingDate,
+                  List<Exhibit> exhibitList) {
+        this.id = id;
+        this.curator = curator;
+        this.name = name;
+        this.city = city;
+        this.openingDate = openingDate;
+        this.exhibitList = exhibitList;
+    }
+
+    /**
+     * HATEOAS links.
+     */
+    @JsonbProperty("_links")
+    private Map<String, Link> links = new HashMap<>();
 }

@@ -1,7 +1,7 @@
 package pl.wszeborowski.mateusz.exhibit.view.converter;
 
+import pl.wszeborowski.mateusz.exhibit.ExhibitService;
 import pl.wszeborowski.mateusz.exhibit.model.Exhibit;
-import pl.wszeborowski.mateusz.museum.MuseumService;
 
 import javax.enterprise.context.Dependent;
 import javax.faces.component.UIComponent;
@@ -19,14 +19,14 @@ import javax.inject.Inject;
 @Dependent
 public class ExhibitConverter implements Converter<Exhibit> {
     /**
-     * Museum service needed to get an exhibit by it's id
+     * Exhibit service needed to get an exhibit by it's id
      * This service is injected by a constructor
      */
-    private MuseumService museumService;
+    private ExhibitService exhibitService;
 
     @Inject
-    public ExhibitConverter(MuseumService museumService) {
-        this.museumService = museumService;
+    public ExhibitConverter(ExhibitService exhibitService) {
+        this.exhibitService = exhibitService;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ExhibitConverter implements Converter<Exhibit> {
         if (value == null || value.isEmpty()) {
             return null;
         }
-        return museumService.findExhibit(Integer.parseInt(value));
+        return exhibitService.findExhibit(Integer.parseInt(value));
     }
 
     @Override

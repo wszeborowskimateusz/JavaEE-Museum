@@ -1,9 +1,9 @@
 package pl.wszeborowski.mateusz.exhibit.view;
 
 import lombok.Setter;
+import pl.wszeborowski.mateusz.exhibit.ExhibitService;
 import pl.wszeborowski.mateusz.exhibit.model.Exhibit;
 import pl.wszeborowski.mateusz.exhibit.model.ExhibitCondition;
-import pl.wszeborowski.mateusz.museum.MuseumService;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -23,7 +23,7 @@ public class ExhibitModify implements Serializable {
     /**
      * An injected museum service
      */
-    private MuseumService museumService;
+    private ExhibitService exhibitService;
 
     /**
      * An exhibit to be edited
@@ -32,8 +32,8 @@ public class ExhibitModify implements Serializable {
     private Exhibit exhibit;
 
     @Inject
-    public ExhibitModify(MuseumService museumService) {
-        this.museumService = museumService;
+    public ExhibitModify(ExhibitService exhibitService) {
+        this.exhibitService = exhibitService;
     }
 
     /**
@@ -62,7 +62,7 @@ public class ExhibitModify implements Serializable {
      * @return navigation url
      */
     public String saveExhibit() {
-        museumService.saveExhibit(exhibit);
+        exhibitService.saveExhibit(exhibit);
         return "exhibit_list?faces-redirect=true";
     }
 }

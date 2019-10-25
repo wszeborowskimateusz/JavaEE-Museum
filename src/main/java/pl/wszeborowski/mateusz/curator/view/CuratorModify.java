@@ -1,8 +1,8 @@
 package pl.wszeborowski.mateusz.curator.view;
 
 import lombok.Setter;
+import pl.wszeborowski.mateusz.curator.CuratorService;
 import pl.wszeborowski.mateusz.curator.model.Curator;
-import pl.wszeborowski.mateusz.museum.MuseumService;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -18,9 +18,9 @@ import java.io.Serializable;
 @ViewScoped
 public class CuratorModify implements Serializable {
     /**
-     * Injected museum service
+     * Injected curator service
      */
-    private MuseumService museumService;
+    private CuratorService curatorService;
 
     /**
      * An edited curator
@@ -42,8 +42,8 @@ public class CuratorModify implements Serializable {
     }
 
     @Inject
-    public CuratorModify(MuseumService museumService) {
-        this.museumService = museumService;
+    public CuratorModify(CuratorService curatorService) {
+        this.curatorService = curatorService;
     }
 
     /**
@@ -52,7 +52,7 @@ public class CuratorModify implements Serializable {
      * @return navigation url
      */
     public String saveCurator() {
-        museumService.saveCurator(curator);
+        curatorService.saveCurator(curator);
         return "curator_list?faces-redirect=true";
     }
 }
