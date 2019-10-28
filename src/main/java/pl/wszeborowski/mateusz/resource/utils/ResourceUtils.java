@@ -60,4 +60,14 @@ public class ResourceUtils {
                     .href(uri(info, clazz, methodName, id))
                     .build());
     }
+
+    public static void addLink(Map<String, Link> links, UriInfo info, Class clazz,
+                               String methodName, int id, String linkName, String method) {
+        links.put(
+                linkName,
+                Link.builder()
+                    .href(uri(info, clazz, methodName, id))
+                    .method(method)
+                    .build());
+    }
 }

@@ -12,8 +12,7 @@ import java.util.List;
 
 import static pl.wszeborowski.mateusz.curator.resource.utils.CuratorResourceUtils.preparePaginationLinks;
 import static pl.wszeborowski.mateusz.resource.UriHelper.uri;
-import static pl.wszeborowski.mateusz.resource.utils.ResourceUtils.addApiLink;
-import static pl.wszeborowski.mateusz.resource.utils.ResourceUtils.addSelfLink;
+import static pl.wszeborowski.mateusz.resource.utils.ResourceUtils.*;
 
 
 /**
@@ -53,8 +52,12 @@ public class CuratorResource {
         }
         List<Curator> curators = curatorService.findAllCurators(page * PAGE_SIZE, PAGE_SIZE);
 
-        curators.forEach(curator -> addSelfLink(curator.getLinks(), info, CuratorResource.class,
-                "getCurator", curator.getId()));
+        curators.forEach(curator -> {
+            addSelfLink(curator.getLinks(), info, CuratorResource.class,
+                    "getCurator", curator.getId());
+            addLink(curator.getLinks(), info, CuratorResource.class,
+                    "removeCurator", curator.getId(), "removeCurator", "DELETE");
+        });
 
         EmbeddedResource<List<Curator>> embedded =
                 preparePaginationLinks(curatorService, curators, info, page);

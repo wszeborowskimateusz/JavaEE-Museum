@@ -44,9 +44,13 @@ public class MuseumResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllMuseums() {
         List<Museum> museums = museumService.findAllMuseums();
-        museums.forEach(
-                museum -> addSelfLink(museum.getLinks(), info, MuseumResource.class, "getMuseum",
-                        museum.getId()));
+        museums.forEach(museum -> {
+            addSelfLink(museum.getLinks(), info,
+                    MuseumResource.class, "getMuseum",
+                    museum.getId());
+            addLink(museum.getLinks(), info, MuseumResource.class,
+                    "removeMuseum", museum.getId(), "removeMuseum", "DELETE");
+        });
 
         EmbeddedResource.EmbeddedResourceBuilder<List<Museum>> builder =
                 EmbeddedResource.<List<Museum>>builder()

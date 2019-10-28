@@ -11,8 +11,7 @@ import javax.ws.rs.core.*;
 import java.util.List;
 
 import static pl.wszeborowski.mateusz.resource.UriHelper.uri;
-import static pl.wszeborowski.mateusz.resource.utils.ResourceUtils.addApiLink;
-import static pl.wszeborowski.mateusz.resource.utils.ResourceUtils.addSelfLink;
+import static pl.wszeborowski.mateusz.resource.utils.ResourceUtils.*;
 
 /**
  * A REST resource that represents an Exhibit
@@ -45,8 +44,12 @@ public class ExhibitResource {
         }
 
         List<Exhibit> exhibits = exhibitService.findAllExhibits();
-        exhibits.forEach(exhibit -> addSelfLink(exhibit.getLinks(), info, ExhibitResource.class,
-                "getExhibit", exhibit.getId()));
+        exhibits.forEach(exhibit -> {
+            addSelfLink(exhibit.getLinks(), info, ExhibitResource.class,
+                    "getExhibit", exhibit.getId());
+            addLink(exhibit.getLinks(), info, ExhibitResource.class,
+                    "removeExhibit", exhibit.getId(), "removeExhibit", "DELETE");
+        });
 
         EmbeddedResource.EmbeddedResourceBuilder<List<Exhibit>> builder =
                 EmbeddedResource.<List<Exhibit>>builder()
