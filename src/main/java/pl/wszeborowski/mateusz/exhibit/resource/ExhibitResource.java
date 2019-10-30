@@ -8,6 +8,7 @@ import pl.wszeborowski.mateusz.resource.model.Link;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.util.HashMap;
 import java.util.List;
 
 import static pl.wszeborowski.mateusz.resource.UriHelper.uri;
@@ -51,9 +52,11 @@ public class ExhibitResource {
                     "removeExhibit", exhibit.getId(), "removeExhibit", "DELETE");
         });
 
+        HashMap<String, List<Exhibit>> exhibitsMap = new HashMap<>();
+        exhibitsMap.put("exhibits", exhibits);
         EmbeddedResource.EmbeddedResourceBuilder<List<Exhibit>> builder =
                 EmbeddedResource.<List<Exhibit>>builder()
-                        .embedded("exhibits", exhibits);
+                        .embedded(exhibitsMap);
 
         addApiLink(builder, info);
         addSelfLink(builder, info, ExhibitResource.class, "getAllExhibits");
@@ -122,7 +125,7 @@ public class ExhibitResource {
         Exhibit originalExhibit = exhibitService.findExhibit(exhibitId);
         if (originalExhibit == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
-        } else if (originalExhibit.getId() != exhibit.getId()) {
+        } else if (!originalExhibit.getId().equals(exhibit.getId())) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         exhibitService.saveExhibit(exhibit);

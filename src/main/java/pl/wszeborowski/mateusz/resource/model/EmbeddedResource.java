@@ -20,7 +20,7 @@ public class EmbeddedResource<V> {
      */
     @Singular
     @JsonbProperty("_links")
-    private Map<String, Link> links;
+    public Map<String, Link> links;
 
     /**
      * Embedded resource, i.e. collection.

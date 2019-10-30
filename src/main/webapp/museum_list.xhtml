@@ -48,6 +48,10 @@
         </h:dataTable>
 
         <h:button value="Create" outcome="museum_modify.xhtml"/>
+
+        <h:form>
+            <h:commandButton action="#{museumList.init}" value="Init"/>
+        </h:form>
     </ui:define>
 
 </ui:composition>

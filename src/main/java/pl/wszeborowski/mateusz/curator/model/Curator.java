@@ -5,45 +5,40 @@ import lombok.NoArgsConstructor;
 import pl.wszeborowski.mateusz.resource.model.Link;
 
 import javax.json.bind.annotation.JsonbProperty;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PastOrPresent;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-
-/**
- * A curator of a given museum {@link pl.wszeborowski.mateusz.museum.model.Museum}
- *
- * @author wszeborowskimateusz
- */
 @NoArgsConstructor
 @Data
+@Entity
+@Table(name = "curators")
+@NamedQuery(name = Curator.Queries.FIND_ALL, query = "select curator from Curator curator")
+@NamedQuery(name = Curator.Queries.COUNT, query = "select count(curator) from Curator curator")
 public class Curator implements Serializable {
-    /**
-     * An artificial id of the curator
-     */
-    private int id;
 
-    /**
-     * A login of the curator account
-     */
+    public static class Queries {
+        public static final String FIND_ALL = "Curator.findAll";
+        public static final String COUNT = "Curator.count";
+    }
+
+    @Id
+    @GeneratedValue
+    private Integer id;
+
+    @NotBlank
     private String login;
 
-    /**
-     * A password of the curator account
-     */
+    @NotBlank
     private String name;
 
-    /**
-     * A date of hiring of curator
-     */
+    @PastOrPresent
     private LocalDate dateOfHiring;
 
-    /**
-     * A cloning constructor for a Curator
-     *
-     * @param curator Curator to be cloned
-     */
     public Curator(Curator curator) {
         this.id = curator.id;
         this.login = curator.login;
@@ -51,16 +46,14 @@ public class Curator implements Serializable {
         this.dateOfHiring = curator.dateOfHiring;
     }
 
-    public Curator(int id, String login, String name, LocalDate dateOfHiring) {
-        this.id = id;
+    public Curator(String login, String name, LocalDate dateOfHiring) {
         this.login = login;
         this.name = name;
         this.dateOfHiring = dateOfHiring;
     }
 
-    /**
-     * HATEOAS links.
-     */
+
     @JsonbProperty("_links")
+    @Transient
     private Map<String, Link> links = new HashMap<>();
 }

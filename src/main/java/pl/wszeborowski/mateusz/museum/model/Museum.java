@@ -8,6 +8,9 @@ import pl.wszeborowski.mateusz.resource.model.Link;
 
 import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.annotation.JsonbTransient;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PastOrPresent;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -15,53 +18,39 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * This is a museum that has some [Curator] and a list of Exhibits
- * {@link pl.wszeborowski.mateusz.exhibit.model.Exhibit}
- *
- * @author wszeborowskimateusz
- */
 
 @NoArgsConstructor
 @Data
+@Entity
+@Table(name = "museums")
+@NamedQuery(name = Museum.Queries.FIND_ALL, query = "select museum from Museum museum")
 public class Museum implements Serializable {
-    /**
-     * An artificial id of the museum.
-     */
-    private int id;
 
-    /**
-     * Id of the museum's curator. Each museum might have at most one curator.
-     */
+    public static class Queries {
+        public static final String FIND_ALL = "Museum.findAll";
+    }
+
+    @Id
+    @GeneratedValue
+    private Integer id;
+
     @JsonbTransient
+    @OneToOne
     private Curator curator;
 
-    /**
-     * A name of the museum
-     */
+    @NotBlank
     private String name;
 
-    /**
-     * A city where the museum is located
-     */
+    @NotBlank
     private String city;
 
-    /**
-     * A date of opening of the museum
-     */
+    @PastOrPresent
     private LocalDate openingDate;
 
-    /**
-     * List of all of museum's exhibits
-     */
     @JsonbTransient
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Exhibit> exhibitList;
 
-    /**
-     * A cloning constructor
-     *
-     * @param museum A museum to be cloned
-     */
     public Museum(Museum museum) {
         this.curator = museum.curator;
         this.id = museum.id;
@@ -78,9 +67,8 @@ public class Museum implements Serializable {
 
     }
 
-    public Museum(int id, Curator curator, String name, String city, LocalDate openingDate,
+    public Museum(Curator curator, String name, String city, LocalDate openingDate,
                   List<Exhibit> exhibitList) {
-        this.id = id;
         this.curator = curator;
         this.name = name;
         this.city = city;
@@ -88,9 +76,7 @@ public class Museum implements Serializable {
         this.exhibitList = exhibitList;
     }
 
-    /**
-     * HATEOAS links.
-     */
     @JsonbProperty("_links")
+    @Transient
     private Map<String, Link> links = new HashMap<>();
 }

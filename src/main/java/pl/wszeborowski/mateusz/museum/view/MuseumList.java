@@ -49,4 +49,9 @@ public class MuseumList {
         museumService.removeMuseum(museum);
         return "museum_list?faces-redirect=true";
     }
+
+    public String init() {
+        museumService.init();
+        return "museum_list?faces-redirect=true";
+    }
 }

@@ -22,12 +22,6 @@ import static pl.wszeborowski.mateusz.resource.utils.ResourceUtils.*;
  */
 @Path("curators")
 public class CuratorResource {
-
-    /**
-     * Page size for pagination.
-     */
-    private static final int PAGE_SIZE = 2;
-
     @Context
     private UriInfo info;
 
@@ -46,11 +40,18 @@ public class CuratorResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllCurators(
             @QueryParam("only-available") @DefaultValue("false") boolean onlyAvailable,
-            @QueryParam("page") @DefaultValue("0") Integer page) {
+            @QueryParam("page") @DefaultValue("0") Integer page,
+            @QueryParam("pageSize") @DefaultValue("2") Integer pageSize) {
+        if (page < 0) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        if (page > curatorService.findAllAvailableCurators().size() / pageSize) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
         if (onlyAvailable) {
             return Response.ok(curatorService.findAllAvailableCurators()).build();
         }
-        List<Curator> curators = curatorService.findAllCurators(page * PAGE_SIZE, PAGE_SIZE);
+        List<Curator> curators = curatorService.findAllCurators(page * pageSize, pageSize);
 
         curators.forEach(curator -> {
             addSelfLink(curator.getLinks(), info, CuratorResource.class,
@@ -60,7 +61,7 @@ public class CuratorResource {
         });
 
         EmbeddedResource<List<Curator>> embedded =
-                preparePaginationLinks(curatorService, curators, info, page);
+                preparePaginationLinks(curatorService, curators, info, page, pageSize);
 
         return Response.ok(embedded).build();
     }
@@ -125,7 +126,7 @@ public class CuratorResource {
         Curator originalCurator = curatorService.findCurator(curatorId);
         if (originalCurator == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
-        } else if (originalCurator.getId() != curator.getId()) {
+        } else if (!originalCurator.getId().equals(curator.getId())) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         curatorService.saveCurator(curator);

@@ -3,7 +3,7 @@ package pl.wszeborowski.mateusz.resource;
 
 import pl.wszeborowski.mateusz.curator.resource.CuratorResource;
 import pl.wszeborowski.mateusz.exhibit.resource.ExhibitResource;
-import pl.wszeborowski.mateusz.museum.resource.MuseumResource;
+import pl.wszeborowski.mateusz.museum.resource.MuseumResourceHateoas;
 import pl.wszeborowski.mateusz.resource.model.EmbeddedResource;
 import pl.wszeborowski.mateusz.resource.model.Link;
 
@@ -40,8 +40,8 @@ public class Api {
                                      .build())
                 .link("museum", Link.builder().href(
                         info.getBaseUriBuilder()
-                            .path(MuseumResource.class)
-                            .path(MuseumResource.class, "getAllMuseums")
+                            .path(MuseumResourceHateoas.class)
+                            .path(MuseumResourceHateoas.class, "getAllMuseums")
                             .build())
                                     .build())
                 .link("self", Link.builder().href(

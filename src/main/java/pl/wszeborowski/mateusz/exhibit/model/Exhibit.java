@@ -2,46 +2,40 @@ package pl.wszeborowski.mateusz.exhibit.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.wszeborowski.mateusz.exhibit.validation.ExhibitYear;
 import pl.wszeborowski.mateusz.resource.model.Link;
 
 import javax.json.bind.annotation.JsonbProperty;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * An exhibit that is located in a museum
- *
- * @author wszeborowskimateusz
- */
 @NoArgsConstructor
 @Data
+@Entity
+@Table(name = "exhibits")
+@NamedQuery(name = Exhibit.Queries.FIND_ALL, query = "select exhibit from Exhibit exhibit")
 public class Exhibit implements Serializable {
-    /**
-     * An artificial identifier of an exhibit
-     */
-    private int id;
 
-    /**
-     * Name of the exhibit
-     */
+    public static class Queries {
+        public static final String FIND_ALL = "Exhibit.findAll";
+    }
+
+    @Id
+    @GeneratedValue
+    private Integer id;
+
+    @NotBlank
     private String name;
 
-    /**
-     * Condition of the exhibit
-     */
+    @Enumerated(EnumType.STRING)
     private ExhibitCondition condition;
 
-    /**
-     * Estimated year of origin of the exhibit
-     */
+    @ExhibitYear
     private int year;
 
-    /**
-     * Cloning constructor
-     *
-     * @param exhibit an exhibit to be cloned
-     */
     public Exhibit(Exhibit exhibit) {
         this.id = exhibit.id;
         this.name = exhibit.name;
@@ -49,17 +43,14 @@ public class Exhibit implements Serializable {
         this.year = exhibit.year;
     }
 
-    public Exhibit(int id, String name,
+    public Exhibit(String name,
                    ExhibitCondition condition, int year) {
-        this.id = id;
         this.name = name;
         this.condition = condition;
         this.year = year;
     }
 
-    /**
-     * HATEOAS links.
-     */
     @JsonbProperty("_links")
+    @Transient
     private Map<String, Link> links = new HashMap<>();
 }

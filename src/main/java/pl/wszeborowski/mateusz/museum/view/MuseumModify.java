@@ -91,10 +91,7 @@ public class MuseumModify implements Serializable {
      */
     public List<Curator> getAvailableCurators() {
         if (availableCurators == null) {
-            availableCurators = curatorService.findAllAvailableCurators();
-            if (museum != null && museum.getCurator() != null) {
-                availableCurators.add(museum.getCurator());
-            }
+            availableCurators = curatorService.findAllAvailableCuratorsForMuseum(museum);
         }
         return availableCurators;
     }
