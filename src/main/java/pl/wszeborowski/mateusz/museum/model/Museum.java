@@ -1,7 +1,9 @@
 package pl.wszeborowski.mateusz.museum.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import pl.wszeborowski.mateusz.curator.model.Curator;
 import pl.wszeborowski.mateusz.exhibit.model.Exhibit;
 import pl.wszeborowski.mateusz.resource.model.Link;
@@ -10,6 +12,7 @@ import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -21,6 +24,8 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode(exclude = {"curator", "exhibitList"})
+@ToString(exclude = {"curator", "exhibitList"})
 @Entity
 @Table(name = "museums")
 @NamedQuery(name = Museum.Queries.FIND_ALL, query = "select museum from Museum museum")
@@ -35,7 +40,8 @@ public class Museum implements Serializable {
     private Integer id;
 
     @JsonbTransient
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "MuseumCurator")
     private Curator curator;
 
     @NotBlank
@@ -45,10 +51,12 @@ public class Museum implements Serializable {
     private String city;
 
     @PastOrPresent
+    @NotNull
     private LocalDate openingDate;
 
     @JsonbTransient
     @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "MuseumExhibits")
     private List<Exhibit> exhibitList;
 
     public Museum(Museum museum) {

@@ -38,7 +38,24 @@
             </h:column>
 
         </h:dataTable>
+        <h:form>
+            <h:outputLabel value="Search by name:" for="query"/>
+            <h:inputText id="query" value="#{curatorList.searchQuery}"/>
+            <h:commandButton value="Search" action="#{curatorList.search()}"/>
+        </h:form>
+        <h:dataTable value="#{curatorList.filteredCurators}" var="curator">
+            <h:column>
+                <h:outputText value="#{curator.id}"/>
+            </h:column>
 
+            <h:column>
+                <h:outputText value="#{curator.login}"/>
+            </h:column>
+
+            <h:column>
+                <h:outputText value="#{curator.name}"/>
+            </h:column>
+        </h:dataTable>
         <h:button value="Create" outcome="curator_modify.xhtml"/>
     </ui:define>
 

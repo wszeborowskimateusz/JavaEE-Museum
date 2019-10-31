@@ -1,5 +1,7 @@
 package pl.wszeborowski.mateusz.curator.view;
 
+import lombok.Getter;
+import lombok.Setter;
 import pl.wszeborowski.mateusz.curator.CuratorService;
 import pl.wszeborowski.mateusz.curator.model.Curator;
 
@@ -22,21 +24,31 @@ public class CuratorList {
      */
     private CuratorService curatorService;
 
-    /**
-     * Lazy loaded list of curators
-     */
-    private List<Curator> curators;
+    @Getter
+    @Setter
+    private String searchQuery = "";
 
     @Inject
     public CuratorList(CuratorService curatorService) {
         this.curatorService = curatorService;
     }
 
+    @Getter
+    @Setter
+    private List<Curator> filteredCurators;
+
     /**
      * @return all curators in storage
      */
     public List<Curator> getCurators() {
         return curatorService.findAllCurators(0, curatorService.countCurators());
+    }
+
+    /**
+     * @return all curators in storage
+     */
+    private List<Curator> getCuratorsFiltered() {
+        return curatorService.findAllCuratorsFiltered(searchQuery);
     }
 
     /**
@@ -48,5 +60,9 @@ public class CuratorList {
     public String removeCurator(Curator curator) {
         curatorService.removeCurator(curator);
         return "curator_list?faces-redirect=true";
+    }
+
+    public void search() {
+        filteredCurators = getCuratorsFiltered();
     }
 }

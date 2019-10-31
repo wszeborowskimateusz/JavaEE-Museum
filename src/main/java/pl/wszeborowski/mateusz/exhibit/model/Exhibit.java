@@ -8,6 +8,7 @@ import pl.wszeborowski.mateusz.resource.model.Link;
 import javax.json.bind.annotation.JsonbProperty;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,8 +34,9 @@ public class Exhibit implements Serializable {
     @Enumerated(EnumType.STRING)
     private ExhibitCondition condition;
 
+    @NotNull
     @ExhibitYear
-    private int year;
+    private Long year;
 
     public Exhibit(Exhibit exhibit) {
         this.id = exhibit.id;
@@ -44,7 +46,7 @@ public class Exhibit implements Serializable {
     }
 
     public Exhibit(String name,
-                   ExhibitCondition condition, int year) {
+                   ExhibitCondition condition, Long year) {
         this.name = name;
         this.condition = condition;
         this.year = year;

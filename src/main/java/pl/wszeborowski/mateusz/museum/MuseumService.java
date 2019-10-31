@@ -34,11 +34,11 @@ public class MuseumService {
         em.persist(c5);
         em.persist(c6);
 
-        Exhibit e1 = new Exhibit("Holy Grail", ExhibitCondition.EXCELLENT, 760);
-        Exhibit e2 = new Exhibit("Mona Lisa Painting", ExhibitCondition.MEDIUM, 1760);
-        Exhibit e3 = new Exhibit("Davin Sculpture", ExhibitCondition.BAD, 134);
-        Exhibit e4 = new Exhibit("Ancient Vase", ExhibitCondition.TERRIBLE, 35);
-        Exhibit e5 = new Exhibit("Medieval Sword", ExhibitCondition.VERY_GOOD, 1410);
+        Exhibit e1 = new Exhibit("Holy Grail", ExhibitCondition.EXCELLENT, (long) 760);
+        Exhibit e2 = new Exhibit("Mona Lisa Painting", ExhibitCondition.MEDIUM, (long) 1760);
+        Exhibit e3 = new Exhibit("Davin Sculpture", ExhibitCondition.BAD, (long) 134);
+        Exhibit e4 = new Exhibit("Ancient Vase", ExhibitCondition.TERRIBLE, (long) 35);
+        Exhibit e5 = new Exhibit("Medieval Sword", ExhibitCondition.VERY_GOOD, (long) 1410);
 
         em.persist(e1);
         em.persist(e2);

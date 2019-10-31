@@ -34,6 +34,12 @@ public class CuratorService {
                  .getResultList();
     }
 
+    public synchronized List<Curator> findAllCuratorsFiltered(String query) {
+        return em.createNamedQuery(Curator.Queries.FIND_FILTERED, Curator.class)
+                 .setParameter("name", query)
+                 .getResultList();
+    }
+
     public synchronized List<Curator> findAllAvailableCurators() {
         final List<Curator> curatorsHiredAtMuseums =
                 museumService.findAllMuseums().stream()
@@ -69,6 +75,10 @@ public class CuratorService {
 
     @Transactional
     public void removeCurator(Curator curator) {
+        if (curator.getMuseum() != null && curator.getMuseum().getCurator() != null) {
+            em.merge(curator).getMuseum().setCurator(null);
+            em.flush();
+        }
         em.remove(em.merge(curator));
     }
 
