@@ -14,27 +14,14 @@ import static pl.wszeborowski.mateusz.curator.resource.utils.CuratorResourceUtil
 import static pl.wszeborowski.mateusz.resource.UriHelper.uri;
 import static pl.wszeborowski.mateusz.resource.utils.ResourceUtils.*;
 
-
-/**
- * This is a REST resource for Curators
- *
- * @author wszeborowskimateusz
- */
 @Path("curators")
 public class CuratorResource {
     @Context
     private UriInfo info;
 
-    /**
-     * A curator service for business login
-     */
     @Inject
     private CuratorService curatorService;
 
-    /**
-     * @param onlyAvailable this param if true indicates that we want to get only available curators
-     * @return A list of all curators
-     */
     @GET
     @Path("")
     @Produces(MediaType.APPLICATION_JSON)
@@ -66,12 +53,6 @@ public class CuratorResource {
         return Response.ok(embedded).build();
     }
 
-    /**
-     * Add a new curator
-     *
-     * @param curator a curator to be added
-     * @return status 201 CREATED with new object URI
-     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response saveCurator(Curator curator) {
@@ -83,12 +64,6 @@ public class CuratorResource {
                        .build();
     }
 
-    /**
-     * Gets a single curator
-     *
-     * @param curatorId Path param, id of the curator we want to get
-     * @return status 404 if curator was not found or 200 with found curator
-     */
     @GET
     @Path("{curatorId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -111,14 +86,6 @@ public class CuratorResource {
         return Response.ok(curator).build();
     }
 
-    /**
-     * Updates a single curator
-     *
-     * @param curatorId id of the curator we want to edit
-     * @param curator   ad edited curator
-     * @return status 404 if curator with given id was not found, 400 when ids doesnt match and
-     * 200 when curator was properly modified
-     */
     @PUT
     @Path("{curatorId}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -133,12 +100,6 @@ public class CuratorResource {
         return Response.ok().build();
     }
 
-    /**
-     * Removes a single curator
-     *
-     * @param curatorId an id of the curator we want to remove
-     * @return 404 when curator was not found, 204 when curator was properly removed
-     */
     @DELETE
     @Path("{curatorId}")
     public Response removeCurator(@PathParam("curatorId") int curatorId) {

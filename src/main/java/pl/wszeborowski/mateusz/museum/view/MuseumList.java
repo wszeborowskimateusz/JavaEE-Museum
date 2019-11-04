@@ -22,11 +22,6 @@ public class MuseumList {
      */
     private MuseumService museumService;
 
-    /**
-     * Lazy loaded list of museums
-     */
-    private List<Museum> museums;
-
     @Inject
     public MuseumList(MuseumService museumService) {
         this.museumService = museumService;

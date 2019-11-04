@@ -22,11 +22,6 @@ public class ExhibitList {
      */
     private ExhibitService exhibitService;
 
-    /**
-     * Lazy loaded list of exhibits
-     */
-    private List<Exhibit> exhibits;
-
     @Inject
     public ExhibitList(ExhibitService exhibitService) {
         this.exhibitService = exhibitService;

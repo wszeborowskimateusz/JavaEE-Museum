@@ -16,7 +16,8 @@
                 <h:message for="name"/>
 
                 <h:outputLabel value="Year:" for="year"/>
-                <h:inputText id="year" value="#{exhibitModify.exhibit.year}">
+                <h:inputText id="year" value="#{exhibitModify.exhibit.year}"
+                             converterMessage="Must be a number">
                     <f:convertNumber/>
                 </h:inputText>
                 <h:message for="year"/>
