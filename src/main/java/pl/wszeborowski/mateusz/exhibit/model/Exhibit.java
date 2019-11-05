@@ -9,6 +9,7 @@ import javax.json.bind.annotation.JsonbProperty;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,13 +30,14 @@ public class Exhibit implements Serializable {
     private Integer id;
 
     @NotBlank
+    @Size(max = 50, message = "must be at most 50 characters")
     private String name;
 
     @Enumerated(EnumType.STRING)
     private ExhibitCondition condition;
 
-    @NotNull
     @ExhibitYear
+    @NotNull(message = "year must be provided")
     private Long year;
 
     public Exhibit(Exhibit exhibit) {

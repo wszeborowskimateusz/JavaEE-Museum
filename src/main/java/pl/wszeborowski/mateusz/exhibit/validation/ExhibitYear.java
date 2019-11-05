@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface ExhibitYear {
 
-    String message() default "an exhibit cannot be from the future";
+    String message() default "an exhibit must have a valid date from the past";
 
     Class<?>[] groups() default {};
 

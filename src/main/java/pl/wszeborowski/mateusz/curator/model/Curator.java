@@ -12,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -40,13 +41,15 @@ public class Curator implements Serializable {
     private Integer id;
 
     @NotBlank
+    @Size(max = 50, message = "must be at most 50 characters")
     private String login;
 
     @NotBlank
+    @Size(max = 50, message = "must be at most 50 characters")
     private String name;
 
     @PastOrPresent
-    @NotNull
+    @NotNull(message = "date field cannot be empty")
     private LocalDate dateOfHiring;
 
     @OneToOne(mappedBy = "curator")

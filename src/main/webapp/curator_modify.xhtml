@@ -21,7 +21,7 @@
 
                 <h:outputLabel value="Date of hiring:" for="dateOfHiring"/>
                 <h:inputText id="dateOfHiring" value="#{curatorModify.curator.dateOfHiring}"
-                             converterMessage="Format must be: yyyy-MM-dd">
+                             converterMessage="format must be: yyyy-MM-dd">
                     <f:convertDateTime type="localDate" pattern="yyyy-MM-dd"/>
                 </h:inputText>
                 <h:message for="dateOfHiring"/>

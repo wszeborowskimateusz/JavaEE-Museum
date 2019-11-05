@@ -14,13 +14,13 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 
 @NoArgsConstructor
 @Data
@@ -45,13 +45,15 @@ public class Museum implements Serializable {
     private Curator curator;
 
     @NotBlank
+    @Size(max = 50, message = "must be at most 50 characters")
     private String name;
 
     @NotBlank
+    @Size(max = 50, message = "must be at most 50 characters")
     private String city;
 
     @PastOrPresent
-    @NotNull
+    @NotNull(message = "date field cannot be empty")
     private LocalDate openingDate;
 
     @JsonbTransient

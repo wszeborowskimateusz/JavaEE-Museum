@@ -21,7 +21,7 @@
 
                 <h:outputLabel value="Opening date:" for="openingDate"/>
                 <h:inputText id="openingDate" value="#{museumModify.museum.openingDate}"
-                             converterMessage="Format must be: yyyy-MM-dd">
+                             converterMessage="format must be: yyyy-MM-dd">
                     <f:convertDateTime type="localDate" pattern="yyyy-MM-dd"/>
                 </h:inputText>
                 <h:message for="openingDate"/>

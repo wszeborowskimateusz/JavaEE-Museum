@@ -4,13 +4,13 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Calendar;
 
-public class ExhibitYearValidator implements ConstraintValidator<ExhibitYear, Long> {
+public class ExhibitYearValidator implements ConstraintValidator<ExhibitYear, Object> {
     @Override
-    public boolean isValid(Long value, ConstraintValidatorContext context) {
-        if (value == null) {
-            return true;
+    public boolean isValid(Object value, ConstraintValidatorContext context) {
+        if (!(value instanceof Long)) {
+            return false;
         }
         final int currentYear = Math.toIntExact(Calendar.getInstance().get(Calendar.YEAR));
-        return value < currentYear;
+        return (Long) value < currentYear;
     }
 }
