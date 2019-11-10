@@ -4,12 +4,15 @@ import lombok.NoArgsConstructor;
 import pl.wszeborowski.mateusz.curator.model.Curator;
 import pl.wszeborowski.mateusz.museum.MuseumService;
 import pl.wszeborowski.mateusz.museum.model.Museum;
+import pl.wszeborowski.mateusz.user.User;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.security.AccessControlException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,15 +26,21 @@ public class CuratorService {
     private EntityManager em;
 
     @Inject
+    private HttpServletRequest securityContext;
+
+    @Inject
     public CuratorService(MuseumService museumService) {
         this.museumService = museumService;
     }
 
     public synchronized List<Curator> findAllCurators(int offset, int limit) {
-        return em.createNamedQuery(Curator.Queries.FIND_ALL, Curator.class)
-                 .setFirstResult(offset)
-                 .setMaxResults(limit)
-                 .getResultList();
+        if (securityContext.isUserInRole(User.Roles.USER)) {
+            return em.createNamedQuery(Curator.Queries.FIND_ALL, Curator.class)
+                     .setFirstResult(offset)
+                     .setMaxResults(limit)
+                     .getResultList();
+        }
+        throw new AccessControlException("Access denied");
     }
 
     public synchronized List<Curator> findAllCuratorsFiltered(String query) {
@@ -61,25 +70,36 @@ public class CuratorService {
     }
 
     public synchronized Curator findCurator(int id) {
-        return em.find(Curator.class, id);
+        if (securityContext.isUserInRole(User.Roles.USER)) {
+            return em.find(Curator.class, id);
+        }
+        throw new AccessControlException("Access denied");
     }
 
     @Transactional
     public synchronized void saveCurator(Curator curator) {
-        if (curator.getId() == null) {
-            em.persist(curator);
-        } else {
-            em.merge(curator);
+        if (securityContext.isUserInRole(User.Roles.ADMIN)) {
+            if (curator.getId() == null) {
+                em.persist(curator);
+            } else {
+                em.merge(curator);
+            }
+            return;
         }
+        throw new AccessControlException("Access denied");
     }
 
     @Transactional
     public void removeCurator(Curator curator) {
-        if (curator.getMuseum() != null && curator.getMuseum().getCurator() != null) {
-            em.merge(curator).getMuseum().setCurator(null);
-            em.flush();
+        if (securityContext.isUserInRole(User.Roles.ADMIN)) {
+            if (curator.getMuseum() != null && curator.getMuseum().getCurator() != null) {
+                em.merge(curator).getMuseum().setCurator(null);
+                em.flush();
+            }
+            em.remove(em.merge(curator));
+            return;
         }
-        em.remove(em.merge(curator));
+        throw new AccessControlException("Access denied");
     }
 
     public synchronized int countCurators() {

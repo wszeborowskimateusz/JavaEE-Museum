@@ -10,17 +10,24 @@
         <meta charset="UTF-8"/>
         <title>Museums</title>
         <h:outputStylesheet library="css" name="style.css"/>
-        <!--        <h:outputScript library="js" name="nav.js" target="body"/>-->
     </h:head>
     <h:body>
         <header>
             <h1>The Great Museums</h1>
+            <h:form>
+                <h:commandLink action="#{userContext.logout}"
+                               rendered="#{request.userPrincipal ne null}">logout #{request.userPrincipal.name}</h:commandLink>
+                <h:link outcome="/change_password.xhtml" value="Change Password"
+                        rendered="#{request.userPrincipal ne null}"/>
+            </h:form>
         </header>
         <nav class="navbar">
             <ul>
-                <li><h:link outcome="museum_list.xhtml" value="Museums"/></li>
-                <li><h:link outcome="exhibit_list.xhtml" value="Exhibits"/></li>
-                <li><h:link outcome="curator_list.xhtml" value="Curators"/></li>
+                <li><h:link outcome="/museum/museum_list.xhtml" value="Museums"/></li>
+                <li><h:link outcome="/exhibit/exhibit_list.xhtml" value="Exhibits"/></li>
+                <li><h:link outcome="/curator/curator_list.xhtml" value="Curators"/></li>
+                <li><h:link outcome="/admin/admin_panel_list.xhtml" value="Admin panel"
+                            rendered="#{request.isUserInRole('ADMIN')}"/></li>
             </ul>
         </nav>
         <section>

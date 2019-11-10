@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/templates/main.xhtml">
+    <f:metadata>
+        <f:viewParam name="user" value="#{adminPanelEdit.user}" required="true"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form>
+            <h:panelGrid columns="3">
+                <h:outputLabel value="Name:" for="name"/>
+                <h:inputText id="name" value="#{adminPanelEdit.user.login}"/>
+                <h:message for="name"/>
+
+                <h:outputLabel value="Roles:" for="roles"/>
+                <h:selectManyListbox id="roles" collectionType="java.util.ArrayList"
+                                     value="#{adminPanelEdit.user.roles}">
+                    <f:selectItems value="#{adminPanelEdit.availableRoles}" var="role"
+                                   itemValue="#{role}"
+                                   itemLabel="#{role}"/>
+                </h:selectManyListbox>
+                <h:message for="roles"/>
+
+                <h:commandButton value="Save" action="#{adminPanelEdit.saveUser}"/>
+                <h:messages/>
+            </h:panelGrid>
+        </h:form>
+
+        <h:button value="Back" outcome="admin_panel_list.xhtml"/>
+    </ui:define>
+
+</ui:composition>

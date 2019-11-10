@@ -14,43 +14,21 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * A bean for editing a single museum
- *
- * @author wszeborowskimateusz
- */
 @Named
 @ViewScoped
 public class MuseumModify implements Serializable {
-    /**
-     * An injected museum service
-     */
+
     private MuseumService museumService;
 
-    /**
-     * An injected curator service
-     */
     private CuratorService curatorService;
 
-    /**
-     * An injected exhibit service
-     */
     private ExhibitService exhibitService;
 
-    /**
-     * A museum to be edited
-     */
     @Setter
     private Museum museum;
 
-    /**
-     * All available exhibits that can be added to the museum
-     */
     private List<Exhibit> availableExhibits;
 
-    /**
-     * All available Curators that can be added to a museum
-     */
     private List<Curator> availableCurators;
 
     @Inject
@@ -61,9 +39,6 @@ public class MuseumModify implements Serializable {
         this.exhibitService = exhibitService;
     }
 
-    /**
-     * @return a museum to be edited or a new museum
-     */
     public Museum getMuseum() {
         if (museum == null) {
             museum = new Museum();
@@ -71,10 +46,6 @@ public class MuseumModify implements Serializable {
         return museum;
     }
 
-    /**
-     * @return all available exhibits in a storage and additionally all exhibits that belongs to
-     * this museum. Available exhibit is a one not possessed by any museum
-     */
     public List<Exhibit> getAvailableExhibits() {
         if (availableExhibits == null) {
             availableExhibits = exhibitService.findAllAvailableExhibits();
@@ -85,10 +56,6 @@ public class MuseumModify implements Serializable {
         return availableExhibits;
     }
 
-    /**
-     * @return all available curators in a storage and additionally curator that is responsible
-     * for edited museum. Available curator is a one that is not responsible for any museum
-     */
     public List<Curator> getAvailableCurators() {
         if (availableCurators == null) {
             availableCurators = curatorService.findAllAvailableCuratorsForMuseum(museum);
@@ -96,11 +63,6 @@ public class MuseumModify implements Serializable {
         return availableCurators;
     }
 
-    /**
-     * Saves edited museum
-     *
-     * @return navigation url
-     */
     public String saveMuseum() {
         museumService.saveMuseum(museum);
         return "museum_list?faces-redirect=true";
