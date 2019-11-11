@@ -33,12 +33,9 @@ public class ChangePassword implements Serializable {
     @Getter
     private String errorMessage = "";
 
-    private ExternalContext securityContext;
-
     @Inject
     public ChangePassword(UserService userService, ExternalContext securityContext) {
         this.userService = userService;
-        this.securityContext = securityContext;
         this.user = userService.findUserByLogin(securityContext.getUserPrincipal().getName());
     }
 
