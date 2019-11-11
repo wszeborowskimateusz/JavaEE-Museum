@@ -1,9 +1,10 @@
 package pl.wszeborowski.mateusz.user.view;
 
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.ExternalContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
 @SessionScoped
@@ -11,10 +12,10 @@ import java.io.Serializable;
 public class UserContext implements Serializable {
 
     @Inject
-    private ExternalContext context;
+    private HttpServletRequest request;
 
-    public String logout() {
-        context.invalidateSession();
+    public String logout() throws ServletException {
+        request.logout();
         return "/index?faces-redirect=true";
     }
 
