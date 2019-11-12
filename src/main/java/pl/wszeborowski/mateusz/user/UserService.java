@@ -35,8 +35,9 @@ public class UserService {
     }
 
     public synchronized User findUserByLogin(String login) {
-        return em.createNamedQuery(User.Queries.FIND_BY_LOGIN, User.class).setParameter("login",
-                login).getSingleResult();
+        return em.createNamedQuery(User.Queries.FIND_BY_LOGIN, User.class)
+                 .setParameter("login", login)
+                 .getSingleResult();
     }
 
     public synchronized List<String> getAvailableRoles() {

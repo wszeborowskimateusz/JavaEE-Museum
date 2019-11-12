@@ -9,6 +9,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
 import static pl.wszeborowski.mateusz.user.HashUtils.sha256;
@@ -34,20 +36,29 @@ public class ChangePassword implements Serializable {
     private String errorMessage = "";
 
     @Inject
+    private HttpServletRequest request;
+
+    @Inject
     public ChangePassword(UserService userService, ExternalContext securityContext) {
         this.userService = userService;
         this.user = userService.findUserByLogin(securityContext.getUserPrincipal().getName());
     }
 
-    public String saveUser() {
+    private boolean isUserPasswordCorrect() {
         if (!oldPassword.isBlank() && !newPassword.isBlank()) {
             String oldPasswordHash = sha256(oldPassword);
-            if (oldPasswordHash.equals(user.getPassword())) {
-                String newPasswordHash = sha256(newPassword);
-                user.setPassword(newPasswordHash);
-                userService.saveUser(user);
-                return "/index.xhtml?faces-redirect=true";
-            }
+            return oldPasswordHash.equals(user.getPassword());
+        }
+        return false;
+    }
+
+    public String saveUser() throws ServletException {
+        if (isUserPasswordCorrect()) {
+            String newPasswordHash = sha256(newPassword);
+            user.setPassword(newPasswordHash);
+            userService.saveUser(user);
+            request.logout();
+            return "/index?faces-redirect=true";
         }
         return "change_password.xhtml";
     }
