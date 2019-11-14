@@ -3,7 +3,10 @@ package pl.wszeborowski.mateusz.user;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -21,6 +24,15 @@ public class User implements Serializable {
         public static final String ADMIN = "ADMIN";
 
         public static final String USER = "USER";
+
+        public static final List<String> ROLES = Arrays.asList(ADMIN, USER);
+    }
+
+    public User(User user) {
+        this.id = user.id;
+        this.login = user.login;
+        this.password = user.password;
+        this.roles = new ArrayList<>(user.roles);
     }
 
     public static class Queries {
@@ -36,10 +48,12 @@ public class User implements Serializable {
     @Getter
     @Setter
     @Column(nullable = false, unique = true)
+    @NotBlank
     private String login;
 
     @Getter
     @Setter
+    @NotBlank
     private String password;
 
     @Getter

@@ -17,6 +17,7 @@ import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +62,10 @@ public class Museum implements Serializable {
     @JoinColumn(name = "MuseumExhibits")
     private List<Exhibit> exhibitList;
 
+    private LocalDateTime lastModificationTime;
+
+    private String ownerName;
+
     public Museum(Museum museum) {
         this.curator = museum.curator;
         this.id = museum.id;
@@ -74,16 +79,19 @@ public class Museum implements Serializable {
                                                  .map(Exhibit::new)
                                                  .collect(Collectors.toList());
         }
-
+        this.lastModificationTime = museum.lastModificationTime;
+        this.ownerName = museum.ownerName;
     }
 
     public Museum(Curator curator, String name, String city, LocalDate openingDate,
-                  List<Exhibit> exhibitList) {
+                  List<Exhibit> exhibitList, LocalDateTime lastModificationTime, String ownerName) {
         this.curator = curator;
         this.name = name;
         this.city = city;
         this.openingDate = openingDate;
         this.exhibitList = exhibitList;
+        this.lastModificationTime = lastModificationTime;
+        this.ownerName = ownerName;
     }
 
     @JsonbProperty("_links")

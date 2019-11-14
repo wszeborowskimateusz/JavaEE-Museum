@@ -40,18 +40,22 @@ public class Exhibit implements Serializable {
     @NotNull(message = "year must be provided")
     private Long year;
 
+    private String ownerName;
+
     public Exhibit(Exhibit exhibit) {
         this.id = exhibit.id;
         this.name = exhibit.name;
         this.condition = exhibit.condition;
         this.year = exhibit.year;
+        this.ownerName = exhibit.ownerName;
     }
 
     public Exhibit(String name,
-                   ExhibitCondition condition, Long year) {
+                   ExhibitCondition condition, Long year, String ownerName) {
         this.name = name;
         this.condition = condition;
         this.year = year;
+        this.ownerName = ownerName;
     }
 
     @JsonbProperty("_links")

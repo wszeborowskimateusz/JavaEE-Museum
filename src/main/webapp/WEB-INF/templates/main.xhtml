@@ -10,6 +10,7 @@
         <meta charset="UTF-8"/>
         <title>Museums</title>
         <h:outputStylesheet library="css" name="style.css"/>
+        <h:outputScript library="js" name="web_sockets.js"/>
     </h:head>
     <h:body>
         <header>
@@ -19,11 +20,15 @@
                                rendered="#{request.userPrincipal ne null}">logout #{request.userPrincipal.name}</h:commandLink>
                 <h:link outcome="/change_password.xhtml" value="Change Password"
                         rendered="#{request.userPrincipal ne null}"/>
+                <h:link outcome="/register.xhtml" value="Register"
+                        rendered="#{request.userPrincipal eq null}"/>
             </h:form>
         </header>
         <nav class="navbar">
             <ul>
                 <li><h:link outcome="/museum/museum_list.xhtml" value="Museums"/></li>
+                <li><h:link outcome="/museum/museum_last_modified.xhtml"
+                            value="Museums - last modified"/></li>
                 <li><h:link outcome="/exhibit/exhibit_list.xhtml" value="Exhibits"/></li>
                 <li><h:link outcome="/curator/curator_list.xhtml" value="Curators"/></li>
                 <li><h:link outcome="/admin/admin_panel_list.xhtml" value="Admin panel"

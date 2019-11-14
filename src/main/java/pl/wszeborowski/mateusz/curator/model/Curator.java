@@ -55,17 +55,21 @@ public class Curator implements Serializable {
     @OneToOne(mappedBy = "curator")
     private Museum museum;
 
+    private String ownerName;
+
     public Curator(Curator curator) {
         this.id = curator.id;
         this.login = curator.login;
         this.name = curator.name;
         this.dateOfHiring = curator.dateOfHiring;
+        this.ownerName = curator.ownerName;
     }
 
-    public Curator(String login, String name, LocalDate dateOfHiring) {
+    public Curator(String login, String name, LocalDate dateOfHiring, String ownerName) {
         this.login = login;
         this.name = name;
         this.dateOfHiring = dateOfHiring;
+        this.ownerName = ownerName;
     }
 
 

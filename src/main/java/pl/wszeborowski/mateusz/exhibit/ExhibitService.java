@@ -5,6 +5,7 @@ import pl.wszeborowski.mateusz.exhibit.model.Exhibit;
 import pl.wszeborowski.mateusz.museum.MuseumService;
 import pl.wszeborowski.mateusz.museum.model.Museum;
 import pl.wszeborowski.mateusz.user.User;
+import pl.wszeborowski.mateusz.user.interceptors.CheckPermission;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -36,6 +37,7 @@ public class ExhibitService {
         this.museumService = museumService;
     }
 
+    @CheckPermission
     public synchronized List<Exhibit> findAllExhibits() {
         return em.createNamedQuery(Exhibit.Queries.FIND_ALL, Exhibit.class).getResultList();
     }
@@ -68,15 +70,16 @@ public class ExhibitService {
 
     @Transactional
     public synchronized void saveExhibit(Exhibit exhibit) {
-        if (securityContext.isUserInRole(User.Roles.USER)) {
-            if (exhibit.getId() == null) {
-                em.persist(exhibit);
-            } else {
-                em.merge(exhibit);
-            }
-            return;
+        if (!securityContext.isUserInRole(User.Roles.USER)) {
+            throw new AccessControlException("Access denied");
         }
-        throw new AccessControlException("Access denied");
+        exhibit.setOwnerName(securityContext.getUserPrincipal().getName());
+        if (exhibit.getId() == null) {
+            em.persist(exhibit);
+        } else {
+            em.merge(exhibit);
+        }
+
     }
 
     @Transactional

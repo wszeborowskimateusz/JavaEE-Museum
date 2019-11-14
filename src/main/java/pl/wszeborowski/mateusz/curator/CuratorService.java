@@ -78,7 +78,8 @@ public class CuratorService {
 
     @Transactional
     public synchronized void saveCurator(Curator curator) {
-        if (securityContext.isUserInRole(User.Roles.ADMIN)) {
+        if (securityContext.isUserInRole(User.Roles.USER)) {
+            curator.setOwnerName(securityContext.getUserPrincipal().getName());
             if (curator.getId() == null) {
                 em.persist(curator);
             } else {

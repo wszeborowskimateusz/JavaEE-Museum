@@ -25,10 +25,10 @@
         <error-code>403</error-code>
         <location>/error/forbidden.xhtml</location>
     </error-page>
-    <error-page>
-        <error-code>500</error-code>
-        <location>/error/forbidden.xhtml</location>
-    </error-page>
+    <!--    <error-page>
+            <error-code>500</error-code>
+            <location>/error/forbidden.xhtml</location>
+        </error-page>-->
     <error-page>
         <exception-type>java.security.AccessControlException</exception-type>
         <location>/error/forbidden.xhtml</location>
@@ -51,9 +51,16 @@
         <auth-constraint>
             <role-name>USER</role-name>
         </auth-constraint>
-        <user-data-constraint>
-            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-        </user-data-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>exhibits</web-resource-name>
+            <url-pattern>/exhibit/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>USER</role-name>
+        </auth-constraint>
     </security-constraint>
 
     <security-constraint>
@@ -62,11 +69,8 @@
             <url-pattern>/museum/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <role-name>ADMIN</role-name>
+            <role-name>USER</role-name>
         </auth-constraint>
-        <user-data-constraint>
-            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-        </user-data-constraint>
     </security-constraint>
 
     <security-constraint>
@@ -77,9 +81,6 @@
         <auth-constraint>
             <role-name>USER</role-name>
         </auth-constraint>
-        <user-data-constraint>
-            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-        </user-data-constraint>
     </security-constraint>
 
     <security-role>

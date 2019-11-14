@@ -1,6 +1,7 @@
 package pl.wszeborowski.mateusz.user;
 
 import lombok.NoArgsConstructor;
+import pl.wszeborowski.mateusz.permissions.model.Permission;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -54,5 +55,23 @@ public class UserService {
         } else {
             em.merge(user);
         }
+    }
+
+    public synchronized Permission getUserPermission(String roleName, String operationName) {
+        return em.createNamedQuery(Permission.Queries.CHECK_PERMISSION, Permission.class)
+                 .setParameter("roleName", roleName)
+                 .setParameter("operationName", operationName)
+                 .getSingleResult();
+    }
+
+    public synchronized List<String> getUserRoles() {
+        List<String> result = new ArrayList<>();
+        for (String role : User.Roles.ROLES) {
+            if (securityContext.isUserInRole(role)) {
+                result.add(role);
+            }
+        }
+
+        return result;
     }
 }
