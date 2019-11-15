@@ -25,7 +25,7 @@ public class MuseumSocketHandler {
     public void sendNewMuseumEventToAllClients() {
         sessions.forEach(session -> {
             try {
-                session.getBasicRemote().sendText("new book");
+                session.getBasicRemote().sendText("new museum");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -33,7 +33,7 @@ public class MuseumSocketHandler {
     }
 
     @OnClose
-    public void onClose(Session session) throws IOException {
+    public void onClose(Session session) {
         sessions.remove(session);
     }
 

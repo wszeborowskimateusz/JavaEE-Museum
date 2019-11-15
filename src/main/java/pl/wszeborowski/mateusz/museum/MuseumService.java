@@ -2,7 +2,7 @@ package pl.wszeborowski.mateusz.museum;
 
 import lombok.NoArgsConstructor;
 import pl.wszeborowski.mateusz.museum.model.Museum;
-import pl.wszeborowski.mateusz.user.User;
+import pl.wszeborowski.mateusz.user.interceptors.CheckPermission;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import java.security.AccessControlException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,42 +27,32 @@ public class MuseumService {
     @Inject
     private Event<Museum> museumEditEvent;
 
+    @CheckPermission
     public synchronized List<Museum> findAllMuseums() {
-        if (securityContext.isUserInRole(User.Roles.USER)) {
-            return em.createNamedQuery(Museum.Queries.FIND_ALL, Museum.class).getResultList();
-        }
-        throw new AccessControlException("Access denied");
+        return em.createNamedQuery(Museum.Queries.FIND_ALL, Museum.class).getResultList();
     }
 
+    @CheckPermission
     public synchronized Museum findMuseum(int id) {
-        if (securityContext.isUserInRole(User.Roles.USER)) {
-            return em.find(Museum.class, id);
-        }
-        throw new AccessControlException("Access denied");
+        return em.find(Museum.class, id);
     }
 
     @Transactional
+    @CheckPermission
     public synchronized void saveMuseum(Museum museum) {
-        if (securityContext.isUserInRole(User.Roles.USER)) {
-            museum.setLastModificationTime(LocalDateTime.now());
-            museum.setOwnerName(securityContext.getUserPrincipal().getName());
-            museumEditEvent.fire(museum);
-            if (museum.getId() == null) {
-                em.persist(museum);
-            } else {
-                em.merge(museum);
-            }
-            return;
+        museum.setLastModificationTime(LocalDateTime.now());
+        museum.setOwnerName(securityContext.getUserPrincipal().getName());
+        museumEditEvent.fire(museum);
+        if (museum.getId() == null) {
+            em.persist(museum);
+        } else {
+            em.merge(museum);
         }
-        throw new AccessControlException("Access denied");
     }
 
     @Transactional
+    @CheckPermission
     public void removeMuseum(Museum museum) {
-        if (securityContext.isUserInRole(User.Roles.ADMIN)) {
-            em.remove(em.merge(museum));
-            return;
-        }
-        throw new AccessControlException("Access denied");
+        em.remove(em.merge(museum));
     }
 }

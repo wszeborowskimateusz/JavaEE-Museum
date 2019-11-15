@@ -63,15 +63,4 @@ public class UserService {
                  .setParameter("operationName", operationName)
                  .getSingleResult();
     }
-
-    public synchronized List<String> getUserRoles() {
-        List<String> result = new ArrayList<>();
-        for (String role : User.Roles.ROLES) {
-            if (securityContext.isUserInRole(role)) {
-                result.add(role);
-            }
-        }
-
-        return result;
-    }
 }

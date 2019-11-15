@@ -4,7 +4,6 @@ import lombok.NoArgsConstructor;
 import pl.wszeborowski.mateusz.exhibit.model.Exhibit;
 import pl.wszeborowski.mateusz.museum.MuseumService;
 import pl.wszeborowski.mateusz.museum.model.Museum;
-import pl.wszeborowski.mateusz.user.User;
 import pl.wszeborowski.mateusz.user.interceptors.CheckPermission;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -13,7 +12,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import java.security.AccessControlException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -64,30 +62,25 @@ public class ExhibitService {
         return availableExhibits;
     }
 
+    @CheckPermission
     public synchronized Exhibit findExhibit(int id) {
         return em.find(Exhibit.class, id);
     }
 
     @Transactional
+    @CheckPermission
     public synchronized void saveExhibit(Exhibit exhibit) {
-        if (!securityContext.isUserInRole(User.Roles.USER)) {
-            throw new AccessControlException("Access denied");
-        }
         exhibit.setOwnerName(securityContext.getUserPrincipal().getName());
         if (exhibit.getId() == null) {
             em.persist(exhibit);
         } else {
             em.merge(exhibit);
         }
-
     }
 
     @Transactional
+    @CheckPermission
     public void removeExhibit(Exhibit exhibit) {
-        if (securityContext.isUserInRole(User.Roles.USER)) {
-            em.remove(em.merge(exhibit));
-            return;
-        }
-        throw new AccessControlException("Access denied");
+        em.remove(em.merge(exhibit));
     }
 }

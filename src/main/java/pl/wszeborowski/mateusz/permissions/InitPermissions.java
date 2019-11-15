@@ -20,17 +20,17 @@ public class InitPermissions {
         Permission permissionUser1 = new Permission(User.Roles.USER, "findExhibit",
                 Permission.PermissionType.GRANTED);
         Permission permissionUser2 = new Permission(User.Roles.USER, "findAllExhibits",
-                Permission.PermissionType.IF_OWNER);
+                Permission.PermissionType.GRANTED);
         Permission permissionUser3 = new Permission(User.Roles.USER, "removeCurator",
-                Permission.PermissionType.DENIED);
+                Permission.PermissionType.IF_OWNER);
         Permission permissionUser4 = new Permission(User.Roles.USER, "saveCurator",
                 Permission.PermissionType.GRANTED);
-        Permission permissionUser5 = new Permission(User.Roles.USER, "readExhibit",
+        Permission permissionUser5 = new Permission(User.Roles.USER, "findCurator",
                 Permission.PermissionType.GRANTED);
-        Permission permissionUser6 = new Permission(User.Roles.USER, "editExhibit",
-                Permission.PermissionType.IF_OWNER);
+        Permission permissionUser6 = new Permission(User.Roles.USER, "findAllCurators",
+                Permission.PermissionType.GRANTED);
         Permission permissionUser7 = new Permission(User.Roles.USER, "removeExhibit",
-                Permission.PermissionType.DENIED);
+                Permission.PermissionType.IF_OWNER);
         Permission permissionUser8 = new Permission(User.Roles.USER, "saveExhibit",
                 Permission.PermissionType.GRANTED);
         Permission permissionUser9 = new Permission(User.Roles.USER, "findMuseum",
@@ -50,9 +50,9 @@ public class InitPermissions {
                 Permission.PermissionType.GRANTED);
         Permission permissionAdmin4 = new Permission(User.Roles.ADMIN, "saveCurator",
                 Permission.PermissionType.GRANTED);
-        Permission permissionAdmin5 = new Permission(User.Roles.ADMIN, "readExhibit",
+        Permission permissionAdmin5 = new Permission(User.Roles.ADMIN, "findCurator",
                 Permission.PermissionType.GRANTED);
-        Permission permissionAdmin6 = new Permission(User.Roles.ADMIN, "editExhibit",
+        Permission permissionAdmin6 = new Permission(User.Roles.ADMIN, "findAllCurators",
                 Permission.PermissionType.GRANTED);
         Permission permissionAdmin7 = new Permission(User.Roles.ADMIN, "removeExhibit",
                 Permission.PermissionType.GRANTED);
