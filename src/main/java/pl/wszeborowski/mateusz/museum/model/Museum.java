@@ -83,6 +83,12 @@ public class Museum implements Serializable {
         this.ownerName = museum.ownerName;
     }
 
+    @PreUpdate
+    @PrePersist
+    private void update() {
+        lastModificationTime = LocalDateTime.now();
+    }
+
     public Museum(Curator curator, String name, String city, LocalDate openingDate,
                   List<Exhibit> exhibitList, LocalDateTime lastModificationTime, String ownerName) {
         this.curator = curator;

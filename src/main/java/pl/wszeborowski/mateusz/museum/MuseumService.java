@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @ApplicationScoped
@@ -40,7 +39,6 @@ public class MuseumService {
     @Transactional
     @CheckPermission
     public synchronized void saveMuseum(Museum museum) {
-        museum.setLastModificationTime(LocalDateTime.now());
         museum.setOwnerName(securityContext.getUserPrincipal().getName());
         museumEditEvent.fire(museum);
         if (museum.getId() == null) {
