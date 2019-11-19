@@ -1,5 +1,7 @@
 package pl.wszeborowski.mateusz.user.sockets;
 
+import lombok.NoArgsConstructor;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.websocket.OnClose;
 import javax.websocket.OnOpen;
@@ -11,11 +13,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @ServerEndpoint("/web-sockets")
 @ApplicationScoped
+@NoArgsConstructor
 public class MuseumSocketHandler {
     private List<Session> sessions = new CopyOnWriteArrayList<>();
-
-    public MuseumSocketHandler() {
-    }
 
     @OnOpen
     public void onOpen(Session session) {

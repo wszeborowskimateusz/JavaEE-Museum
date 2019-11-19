@@ -51,11 +51,9 @@ public class CheckPermissionInterceptor {
     }
 
     private boolean isUserOwner(Object[] arguments) {
-        if (arguments.length != 1) {
-            return true;
-        }
-        Object argument = arguments[0];
-        if (!((argument instanceof Museum) || (argument instanceof Exhibit) || (argument instanceof Curator))) {
+        Object argument = validateArguments(arguments);
+
+        if (argument == null) {
             return true;
         }
 
@@ -69,5 +67,17 @@ public class CheckPermissionInterceptor {
             Curator curator = (Curator) argument;
             return curator.getOwnerName().equals(securityContext.getUserPrincipal().getName());
         }
+    }
+
+    private Object validateArguments(Object[] arguments) {
+        if (arguments.length != 1) {
+            return null;
+        }
+        Object argument = arguments[0];
+        if (!((argument instanceof Museum) || (argument instanceof Exhibit) || (argument instanceof Curator))) {
+            return null;
+        }
+
+        return argument;
     }
 }
