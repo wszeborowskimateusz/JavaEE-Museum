@@ -36,5 +36,4 @@ public class MuseumSocketHandler {
     public void onClose(Session session) {
         sessions.remove(session);
     }
-
 }
