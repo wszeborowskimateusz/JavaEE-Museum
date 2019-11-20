@@ -4,19 +4,20 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.metamodel.SingularAttribute;
 import java.io.Serializable;
 
 @ToString
 public class FilterTuple implements Serializable {
     @Getter
     @Setter
-    String field;
+    SingularAttribute field;
 
     @Getter
     @Setter
     String filterValue;
 
-    public FilterTuple(String field, String filterValue) {
+    public FilterTuple(SingularAttribute field, String filterValue) {
         this.field = field;
         this.filterValue = filterValue;
     }

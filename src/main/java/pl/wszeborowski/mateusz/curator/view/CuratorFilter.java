@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.wszeborowski.mateusz.curator.CuratorFilterService;
 import pl.wszeborowski.mateusz.curator.model.Curator;
+import pl.wszeborowski.mateusz.curator.model.Curator_;
 import pl.wszeborowski.mateusz.curator.model.FilterTuple;
 
 import javax.faces.view.ViewScoped;
@@ -57,13 +58,13 @@ public class CuratorFilter implements Serializable {
     private List<FilterTuple> getFiltersList() {
         ArrayList<FilterTuple> filters = new ArrayList<>();
         if (!loginFilter.isEmpty()) {
-            filters.add(new FilterTuple("login", loginFilter));
+            filters.add(new FilterTuple(Curator_.login, loginFilter));
         }
         if (!dateOfHiringFilter.isEmpty()) {
-            filters.add(new FilterTuple("dateOfHiring", dateOfHiringFilter));
+            filters.add(new FilterTuple(Curator_.dateOfHiring, dateOfHiringFilter));
         }
         if (!nameFilter.isEmpty()) {
-            filters.add(new FilterTuple("name", nameFilter));
+            filters.add(new FilterTuple(Curator_.name, nameFilter));
         }
         return filters;
     }

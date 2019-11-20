@@ -25,13 +25,19 @@
         </h:panelGroup>
         <h:form id="filterForm">
             <h:outputLabel value="Filter by login:" for="login"/>
-            <h:inputText id="login" value="#{curatorFilter.loginFilter}"/>
+            <h:inputText id="login" value="#{curatorFilter.loginFilter}">
+                <f:ajax update="filterForm"/>
+            </h:inputText>
 
             <h:outputLabel value="Filter by name:" for="name"/>
-            <h:inputText id="name" value="#{curatorFilter.nameFilter}"/>
+            <h:inputText id="name" value="#{curatorFilter.nameFilter}">
+                <f:ajax update="filterForm"/>
+            </h:inputText>
 
             <h:outputLabel value="Filter by dateOfHiring:" for="dateOfHiring"/>
-            <h:inputText id="dateOfHiring" value="#{curatorFilter.dateOfHiringFilter}"/>
+            <h:inputText id="dateOfHiring" value="#{curatorFilter.dateOfHiringFilter}">
+                <f:ajax update="filterForm"/>
+            </h:inputText>
 
             <h:outputLabel value="Order by" for="orderby"/>
             <h:selectOneMenu id="orderby" value="#{curatorFilter.pickedOrderByOption}">
