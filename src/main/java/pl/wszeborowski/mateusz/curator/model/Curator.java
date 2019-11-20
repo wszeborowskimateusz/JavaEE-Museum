@@ -28,12 +28,18 @@ import java.util.Map;
 @NamedQuery(name = Curator.Queries.FIND_FILTERED, query = "select curator from Curator " +
         "curator where lower(curator.name) LIKE CONCAT('%', lower(:name),'%') ")
 @NamedQuery(name = Curator.Queries.COUNT, query = "select count(curator) from Curator curator")
+@NamedEntityGraph(name = Curator.Graphs.WITH_MUSEUM,
+        attributeNodes = {@NamedAttributeNode("museum")})
 public class Curator implements Serializable {
 
     public static class Queries {
         public static final String FIND_ALL = "Curator.findAll";
         public static final String FIND_FILTERED = "Curator.findFiltered";
         public static final String COUNT = "Curator.count";
+    }
+
+    public static class Graphs {
+        public static final String WITH_MUSEUM = "Curator(Museum)";
     }
 
     @Id

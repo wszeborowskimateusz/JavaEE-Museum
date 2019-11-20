@@ -30,10 +30,21 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "museums")
 @NamedQuery(name = Museum.Queries.FIND_ALL, query = "select museum from Museum museum")
+@NamedEntityGraph(
+        name = Museum.Graphs.WITH_CURATOR_AND_EXHIBITS,
+        attributeNodes = {
+                @NamedAttributeNode("curator"),
+                @NamedAttributeNode("exhibitList")
+        }
+)
 public class Museum implements Serializable {
 
     public static class Queries {
         public static final String FIND_ALL = "Museum.findAll";
+    }
+
+    public static class Graphs {
+        public static final String WITH_CURATOR_AND_EXHIBITS = "Museum(Curator, Exhibit)";
     }
 
     @Id

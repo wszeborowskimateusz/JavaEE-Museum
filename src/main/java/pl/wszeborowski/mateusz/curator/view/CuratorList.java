@@ -26,7 +26,7 @@ public class CuratorList {
 
     @Getter
     @Setter
-    private String searchQuery = "";
+    private String searchQuery;
 
     @Inject
     public CuratorList(CuratorService curatorService) {

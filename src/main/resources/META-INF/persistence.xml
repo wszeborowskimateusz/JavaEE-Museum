@@ -6,6 +6,13 @@
         <properties>
             <property name="javax.persistence.schema-generation.database.action"
                       value="drop-and-create"/>
+
+            <property name="hibernate.jdbc.batch_size" value="50"/>
+            <property name="hibernate.order_inserts" value="true"/>
+            <property name="hibernate.order_updates" value="true"/>
+            <property name="hibernate.jdbc.batch_versioned_data" value="true"/>
+            <property name="hibernate.default_batch_fetch_size" value="20"/>
+            <property name="hibernate.jdbc.fetch_size" value="50"/>
         </properties>
     </persistence-unit>
 </persistence>

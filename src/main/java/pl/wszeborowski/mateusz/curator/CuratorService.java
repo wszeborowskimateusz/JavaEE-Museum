@@ -8,11 +8,13 @@ import pl.wszeborowski.mateusz.user.interceptors.CheckPermission;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -37,6 +39,8 @@ public class CuratorService {
         return em.createNamedQuery(Curator.Queries.FIND_ALL, Curator.class)
                  .setFirstResult(offset)
                  .setMaxResults(limit)
+                 .setHint("javax.persistence.loadgraph",
+                         em.getEntityGraph(Curator.Graphs.WITH_MUSEUM))
                  .getResultList();
     }
 
@@ -68,7 +72,9 @@ public class CuratorService {
 
     @CheckPermission
     public synchronized Curator findCurator(int id) {
-        return em.find(Curator.class, id);
+        EntityGraph entityGraph = em.getEntityGraph(Curator.Graphs.WITH_MUSEUM);
+        Map<String, Object> map = Map.of("javax.persistence.loadgraph", entityGraph);
+        return em.find(Curator.class, id, map);
     }
 
     @Transactional

@@ -26,14 +26,11 @@ public class ChangePassword implements Serializable {
 
     @Getter
     @Setter
-    private String oldPassword = "";
+    private String oldPassword;
 
     @Getter
     @Setter
-    private String newPassword = "";
-
-    @Getter
-    private String errorMessage = "";
+    private String newPassword;
 
     @Inject
     private HttpServletRequest request;
