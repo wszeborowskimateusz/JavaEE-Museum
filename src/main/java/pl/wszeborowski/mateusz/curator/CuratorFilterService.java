@@ -45,8 +45,8 @@ public class CuratorFilterService {
 
         List<Predicate> predicates = new ArrayList<>();
         filters.forEach(filterTuple -> {
-            predicates.add(cb.equal(root.get(filterTuple.getField()),
-                    filterTuple.getFilterValue()));
+            predicates.add(cb.like(root.get(filterTuple.getField()),
+                    "%" + filterTuple.getFilterValue() + "%"));
         });
 
         if (!predicates.isEmpty()) {
